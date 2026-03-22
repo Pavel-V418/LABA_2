@@ -10,7 +10,7 @@ class ArraySequence : public Sequence<T>{
 public:
 
     // constructors
-    ArraySequence(T *items, int count);
+    ArraySequence(const T *items, int count);
     ArraySequence();
     ArraySequence(const ArraySequence<T> &arraySequence);
 
@@ -20,23 +20,23 @@ public:
     virtual ArraySequence<T>* Instance() = 0;
     virtual ArraySequence<T>* EmptyArraySequence() const = 0;
 
-    virtual void AppendInternal(T item) = 0;
-    virtual void PrependInternal(T item) = 0;
-    virtual void InsertAtInternal(int index,T item) = 0;
+    virtual void AppendInternal(const T& item) = 0;
+    virtual void PrependInternal(const T& item) = 0;
+    virtual void InsertAtInternal(const T& item, int index) = 0;
 
     // Decompositions
-    T GetFirst() const override;
-    T GetLast() const override;
-    T Get(int index) const override;
+    const T& GetFirst() const override;
+    const T& GetLast() const override;
+    const T& Get(int index) const override;
 
     int GetLength() const override;
 
     Sequence<T>* GetSubsequence(int startIndex, int endIndex) override;
 
     // Operations
-    Sequence<T>* Append(T item) override;
-    Sequence<T>* Prepend(T item) override;
-    Sequence<T>* InsertAt(int index, T item) override;
+    Sequence<T>* Append(const T& item) override;
+    Sequence<T>* Prepend(const T& item) override;
+    Sequence<T>* InsertAt(const T& item, int index) override;
 
     Sequence<T>* Concat(Sequence<T> *list) override;
 
@@ -47,7 +47,7 @@ protected:
 
 /*============ КОНСТРУКТОРЫ ============*/
 template<class T>
-ArraySequence<T>::ArraySequence(T *items, int count) {
+ArraySequence<T>::ArraySequence(const T *items, int count) {
     this->items = new DynamicArray<T>(items, count);
 }
 
@@ -70,21 +70,21 @@ ArraySequence<T>::~ArraySequence() {
 /*============ ГЕТТЕРЫ ============ */
 
 template<class T>
-T ArraySequence<T>::GetFirst() const{
+const T& ArraySequence<T>::GetFirst() const{
     if (items->GetSize() == 0)
         throw std::out_of_range("Sequence is empty");
     return items->Get(0);
 }
 
 template<class T>
-T ArraySequence<T>::GetLast() const {
+const T& ArraySequence<T>::GetLast() const {
     if (items->GetSize() == 0)
         throw std::out_of_range("Sequence is empty");
-    return items->Get(items->Getsize() - 1);
+    return items->Get(items->GetSize() - 1);
 }
 
 template<class T>
-T ArraySequence<T>::Get(int index) const {
+const T& ArraySequence<T>::Get(int index) const {
     if (items->GetSize() == 0)
         throw std::out_of_range("Sequence is empty");
     return items->Get(index);
@@ -96,7 +96,7 @@ int ArraySequence<T>::GetLength() const{
 } //?
 
 template<class T>
-Sequence<T>* ArraySequence<T>::Append(T item) {
+Sequence<T>* ArraySequence<T>::Append(const T& item) {
     ArraySequence<T> *inst = Instance();
     inst->AppendInternal(item);
 
@@ -104,7 +104,7 @@ Sequence<T>* ArraySequence<T>::Append(T item) {
 }
 
 template<class T>
-Sequence<T>* ArraySequence<T>::Prepend(T item) {
+Sequence<T>* ArraySequence<T>::Prepend(const T& item) {
     ArraySequence<T> *inst = Instance();
     inst->PrependInternal(item);
 
@@ -112,9 +112,9 @@ Sequence<T>* ArraySequence<T>::Prepend(T item) {
 }
 
 template<class T>
-Sequence<T>* ArraySequence<T>::InsertAt(int index, T item) {
+Sequence<T>* ArraySequence<T>::InsertAt(const T& item, int index) {
     ArraySequence<T> *inst = Instance();
-    inst->InsertAtInternal(item);
+    inst->InsertAtInternal(item, index);
 
     return inst;
 }

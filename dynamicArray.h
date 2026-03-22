@@ -7,7 +7,7 @@ class DynamicArray {
 
 public:
     // constuctors - способы создания массива
-    DynamicArray(T *items, int count);
+    DynamicArray(const T *items, int count);
     DynamicArray(int size);
     DynamicArray(const DynamicArray<T>& dynamicArray);
 
@@ -15,11 +15,11 @@ public:
     ~DynamicArray();
 
     // Decomposition
-    T Get(int index) const;
+    const T& Get(int index) const;
     int GetSize() const;
 
     // operations
-    void Set(int index, T value);
+    void Set(const T& value, int index);
     void Resize(int newSize);
 
 private:
@@ -28,7 +28,7 @@ private:
 };
 
 template<class T>
-DynamicArray<T>::DynamicArray(T *items, int count) {
+DynamicArray<T>::DynamicArray(const T *items, int count) {
     if (count < 0)
         throw std::invalid_argument("Size cannot be negative"); // создается объект ошибки и выполнение фу-и останавливается
 
@@ -63,7 +63,7 @@ DynamicArray<T>::~DynamicArray() {
 }
 
 template<class T>
-T DynamicArray<T>::Get(int index) const{
+const T& DynamicArray<T>::Get(int index) const{
     if (index < 0 || index >= size)
         throw std::out_of_range("Index out of range");
     return data[index];
@@ -75,7 +75,7 @@ int DynamicArray<T>::GetSize() const{
 }
 
 template<class T>
-void DynamicArray<T>::Set(int index, T value) {
+void DynamicArray<T>::Set(const T& value, int index) {
     if (index < 0 || index >= size)
         throw std::out_of_range("Index out of range");
     data[index] = value;

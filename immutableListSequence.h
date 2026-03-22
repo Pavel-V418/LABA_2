@@ -7,21 +7,21 @@ template<class T>
 class ImmutableListSequence : public  ListSequence<T>{
 
 public:
-    ImmutableListSequence(T *items, int count);
+    ImmutableListSequence(const T *items, int count);
     ImmutableListSequence();
     ImmutableListSequence(const ImmutableListSequence &other);
 
     ListSequence<T>* Instance() override;
     ListSequence<T>* EmptyListSequence() const override;
 
-    void AppendInternal(T item) override;
-    void PrependInternal(T item) override;
-    void InsertAtInternal(int index, T item) override;
+    void AppendInternal(const T& item) override;
+    void PrependInternal(const T& item) override;
+    void InsertAtInternal(const T& item, int index) override;
 
 };
 
 template<class T>
-ImmutableListSequence<T>::ImmutableListSequence(T *items, int count)
+ImmutableListSequence<T>::ImmutableListSequence(const T *items, int count)
     : ListSequence<T>(items, count) {}
 
 template<class T>
@@ -43,17 +43,17 @@ ListSequence<T> *ImmutableListSequence<T>::EmptyListSequence() const {
 }
 
 template<class T>
-void ImmutableListSequence<T>::AppendInternal(T item) {
+void ImmutableListSequence<T>::AppendInternal(const T& item) {
     this->items->Append(item);
 }
 
 template<class T>
-void ImmutableListSequence<T>::PrependInternal(T item) {
+void ImmutableListSequence<T>::PrependInternal(const T& item) {
     this->items->Prepend(item);
 }
 
 template<class T>
-void ImmutableListSequence<T>::InsertAtInternal(int index, T item) {
+void ImmutableListSequence<T>::InsertAtInternal(const T& item, int index) {
     this->items->InsertAt(index, item);
 }
 

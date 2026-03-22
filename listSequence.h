@@ -10,7 +10,7 @@ class ListSequence : public Sequence<T> {
 public:
 
     // constructors
-    ListSequence(T *items, int count);
+    ListSequence(const T *items, int count);
     ListSequence();
     ListSequence(const ListSequence<T>& listSequence);
 
@@ -20,20 +20,20 @@ public:
     virtual ListSequence<T>* Instance() = 0;
     virtual ListSequence<T>* EmptyListSequence() const = 0;
 
-    virtual void AppendInternal(T item) = 0;
-    virtual void PrependInternal(T item) = 0;
-    virtual void InsertAtInternal(int index, T item) = 0;
+    virtual void AppendInternal(const T& item) = 0;
+    virtual void PrependInternal(const T& item) = 0;
+    virtual void InsertAtInternal(const T& item, int index) = 0;
 
     //
-    T GetFirst() const override;
-    T GetLast() const override;
-    T Get(int index) const override;
+    const T& GetFirst() const override;
+    const T& GetLast() const override;
+    const T& Get(int index) const override;
 
     int GetLength() const override;
 
-    Sequence<T>* Append(T item) override;
-    Sequence<T>* Prepend(T item) override;
-    Sequence<T>* InsertAt(int index, T item) override;
+    Sequence<T>* Append(const T& item) override;
+    Sequence<T>* Prepend(const T& item) override;
+    Sequence<T>* InsertAt(const T& item, int index) override;
 
     Sequence<T>* GetSubsequence(int startIndex, int endIndex) override;
 
@@ -46,7 +46,7 @@ protected:
 
 // constructors
 template <class T>
-ListSequence<T>::ListSequence(T *items, int count) {
+ListSequence<T>::ListSequence(const T *items, int count) {
     this->items = new LinkedList<T>(items, count);
 }
 
@@ -67,17 +67,17 @@ ListSequence<T>::~ListSequence() {
 }
 
 template<class T>
-T ListSequence<T>::GetFirst() const {
+const T& ListSequence<T>::GetFirst() const {
     return items->GetFirst();
 }
 
 template<class T>
-T ListSequence<T>::GetLast() const {
+const T& ListSequence<T>::GetLast() const {
     return items->GetLast();
 }
 
 template<class T>
-T ListSequence<T>::Get(int index) const {
+const T& ListSequence<T>::Get(int index) const {
     return items->Get(index);
 }
 
@@ -87,7 +87,7 @@ int ListSequence<T>::GetLength() const {
 }
 
 template<class T>
-Sequence<T>* ListSequence<T>::Append(T item) {
+Sequence<T>* ListSequence<T>::Append(const T& item) {
     ListSequence<T>* inst = Instance();
     inst->AppendInternal(item);
 
@@ -95,7 +95,7 @@ Sequence<T>* ListSequence<T>::Append(T item) {
 }
 
 template<class T>
-Sequence<T>* ListSequence<T>::Prepend(T item) {
+Sequence<T>* ListSequence<T>::Prepend(const T& item) {
     ListSequence<T>* inst = Instance();
     inst->PrependInternal(item);
 
@@ -103,9 +103,9 @@ Sequence<T>* ListSequence<T>::Prepend(T item) {
 }
 
 template<class T>
-Sequence<T>* ListSequence<T>::InsertAt(int index, T item) {
+Sequence<T>* ListSequence<T>::InsertAt(const T& item, int index) {
     ListSequence<T>* inst = Instance();
-    inst->InsertAtInternal(index, item);
+    inst->InsertAtInternal(item, index);
 
     return inst;
 }

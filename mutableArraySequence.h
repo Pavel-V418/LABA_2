@@ -8,16 +8,16 @@ class MutableArraySequence: public ArraySequence<T> {
 
 public:
 
-    MutableArraySequence(T *items, int count);
+    MutableArraySequence(const T *items, int count);
     MutableArraySequence();
     MutableArraySequence(const MutableArraySequence &other);
 
     ArraySequence<T>* Instance() override;
     ArraySequence<T>* EmptyArraySequence() const override;
 
-    void AppendInternal(T item) override;
-    void PrependInternal(T item) override;
-    void InsertAtInternal(int index,T item) override;
+    void AppendInternal(const T& item) override;
+    void PrependInternal(const T& item) override;
+    void InsertAtInternal(const T& item, int index) override;
 
 };
 
@@ -26,7 +26,7 @@ MutableArraySequence<T>::MutableArraySequence()
     : ArraySequence<T>() {}
 
 template<class T>
-MutableArraySequence<T>::MutableArraySequence(T *items, int count)
+MutableArraySequence<T>::MutableArraySequence(const T *items, int count)
     : ArraySequence<T>(items, count) {}
 
 template<class T>
@@ -44,27 +44,27 @@ ArraySequence<T>* MutableArraySequence<T>::EmptyArraySequence() const {
 }
 
 template<class T>
-void MutableArraySequence<T>::AppendInternal(T item) {
+void MutableArraySequence<T>::AppendInternal(const T& item) {
     int index_free = this->items->GetSize();
 
     this->items->Resize(index_free + 1);
-    this->items->Set(index_free, item);
+    this->items->Set(item, index_free);
 }
 
 template<class T>
-void MutableArraySequence<T>::PrependInternal(T item) {
+void MutableArraySequence<T>::PrependInternal(const T& item) {
 
     int size = this->items->GetSize();
     this->items->Resize(size + 1);
 
     for (int i = size; i > 0; i--)
-        this->items->Set(i, this->items->Get(i - 1));
+        this->items->Set(this->items->Get(i - 1), i);
 
-    this->items->Set(0, item);
+    this->items->Set(item, 0);
 }
 
 template<class T>
-void MutableArraySequence<T>::InsertAtInternal(int index, T item) {
+void MutableArraySequence<T>::InsertAtInternal(const T& item, int index) {
 
     if (index < 0 || index > this->items->GetSize())
         throw std::out_of_range("Index out of range");
@@ -73,9 +73,9 @@ void MutableArraySequence<T>::InsertAtInternal(int index, T item) {
     this->items->Resize(size + 1);
 
     for (int i = size; i > index; i--) {
-        this->items->Set(i, this->items->Get(i - 1));
+        this->items->Set(this->items->Get(i - 1), i);
     }
-    this->items->Set(index, item);
+    this->items->Set(item, index);
 }
 
 #endif //LABA2_MUTABLEARRAYSEQUENCE_H

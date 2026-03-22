@@ -6,7 +6,7 @@ template <class T>
 class LinkedList {
 public:
     // constructors
-    LinkedList(T *element, int count);
+    LinkedList(const T *element, int count);
     LinkedList();
     LinkedList(const LinkedList& list);
 
@@ -14,24 +14,24 @@ public:
     ~LinkedList();
 
     // Decomposition
-    T GetFirst() const;
-    T GetLast() const;
-    T Get(int index) const;
+    const T& GetFirst() const;
+    const T& GetLast() const;
+    const T& Get(int index) const;
 
     LinkedList<T>* GetSubList(int startIndex, int endIndex); // сл этап
 
     int GetLength() const;
 
     // Operations
-    void Append(T element); // добавить в конец
-    void Prepend(T element); // добавить в начало
-    void InsertAt(int index, T element); // добавить в заданную позицию // сл этап
+    void Append(const T& element); // добавить в конец
+    void Prepend(const T& element); // добавить в начало
+    void InsertAt(const T& element, int index); // добавить в заданную позицию // сл этап
 
     LinkedList<T>* Concat(LinkedList<T> *list); // сл этап
 
 private:
     struct Node {
-        T data;
+        T data; // T здесь используем для хранения объекта, поэтому не ссылка
         Node *next;//
 
         Node(T value) {
@@ -48,7 +48,7 @@ private:
 /*============ КОНСТРУКТОРЫ ============*/
 
 template<class T>
-LinkedList<T>::LinkedList(T *element, int count) {
+LinkedList<T>::LinkedList(const T *element, int count) {
     if (count < 0)
         throw std::out_of_range("Index out of range");
     head = nullptr;
@@ -97,21 +97,21 @@ LinkedList<T>::~LinkedList() {
 /*============ ГЕТТЕРЫ ============*/
 
 template<class T>
-T LinkedList<T>::GetFirst() const{
+const T& LinkedList<T>::GetFirst() const{
     if (length == 0)
         throw std::out_of_range("Empty list");
     return head->data;
 }
 
 template<class T>
-T LinkedList<T>::GetLast() const {
+const T& LinkedList<T>::GetLast() const {
     if (length == 0)
         throw std::out_of_range("Empty list");
     return tail->data;
 }
 
 template<class T>
-T LinkedList<T>::Get(int index) const {
+const T& LinkedList<T>::Get(int index) const {
     if (index < 0 || index >= length)
         throw std::out_of_range("Empty list");
 
@@ -151,7 +151,7 @@ LinkedList<T> *LinkedList<T>::GetSubList(int startIndex, int endIndex) {
 /*============ ОПЕРАЦИИ ============*/
 
 template<class T>
-void LinkedList<T>::Append(T element) {
+void LinkedList<T>::Append(const T& element) {
 
     Node *newNode = new Node(element);
 
@@ -168,7 +168,7 @@ void LinkedList<T>::Append(T element) {
 }
 
 template<class T>
-void LinkedList<T>::Prepend(T element) {
+void LinkedList<T>::Prepend(const T& element) {
 
     Node *newNode = new Node(element);
 
@@ -182,7 +182,7 @@ void LinkedList<T>::Prepend(T element) {
 }
 
 template<class T>
-void LinkedList<T>::InsertAt(int index, T element) {
+void LinkedList<T>::InsertAt(const T& element, int index) {
     if (index < 0 || index > length)
         throw std::out_of_range("Index out of range");
 
@@ -224,4 +224,4 @@ LinkedList<T>* LinkedList<T>::Concat(LinkedList<T> *list) {
 }
 
 
-#endif //LABA2  _LINKEDLIST_H
+#endif //LABA2_LINKEDLIST_H
