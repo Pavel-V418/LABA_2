@@ -17,12 +17,10 @@ public:
     // destructor
     ~ArraySequence() override;
 
-    virtual ArraySequence<T>* Instance() = 0;
-    virtual ArraySequence<T>* EmptyArraySequence() const = 0;
-
-    virtual void AppendInternal(const T& item) = 0;
-    virtual void PrependInternal(const T& item) = 0;
-    virtual void InsertAtInternal(const T& item, int index) = 0;
+    // Operations
+    void AppendInternal(const T& item) override;
+    void PrependInternal(const T& item) override;
+    void InsertAtInternal(const T& item, int index) override;
 
     // Decompositions
     const T& GetFirst() const override;
@@ -31,17 +29,8 @@ public:
 
     int GetLength() const override;
 
-    Sequence<T>* GetSubsequence(int startIndex, int endIndex) override;
-
-    // Operations
-    Sequence<T>* Append(const T& item) override;
-    Sequence<T>* Prepend(const T& item) override;
-    Sequence<T>* InsertAt(const T& item, int index) override;
-
-    Sequence<T>* Concat(Sequence<T> *list) override;
-
 protected:
-    DynamicArray<T> *items;
+    DynamicArray<T> *items; // убрать указатель
 };
 
 
@@ -85,69 +74,48 @@ const T& ArraySequence<T>::GetLast() const {
 
 template<class T>
 const T& ArraySequence<T>::Get(int index) const {
-    if (items->GetSize() == 0)
-        throw std::out_of_range("Sequence is empty");
+    if (index < 0 || index >= items->GetSize())
+        throw std::out_of_range("Index out of range");
     return items->Get(index);
 }
 
 template<class T>
 int ArraySequence<T>::GetLength() const{
     return items->GetSize();
-} //?
-
-template<class T>
-Sequence<T>* ArraySequence<T>::Append(const T& item) {
-    ArraySequence<T> *inst = Instance();
-    inst->AppendInternal(item);
-
-    return inst;
 }
 
 template<class T>
-Sequence<T>* ArraySequence<T>::Prepend(const T& item) {
-    ArraySequence<T> *inst = Instance();
-    inst->PrependInternal(item);
+void ArraySequence<T>::AppendInternal(const T& item) {
+    int index_free = this->items->GetSize();
 
-    return inst;
+    this->items->Resize(index_free + 1);
+    this->items->Set(item, index_free);
 }
 
 template<class T>
-Sequence<T>* ArraySequence<T>::InsertAt(const T& item, int index) {
-    ArraySequence<T> *inst = Instance();
-    inst->InsertAtInternal(item, index);
+void ArraySequence<T>::PrependInternal(const T& item) {
 
-    return inst;
+    int size = this->items->GetSize();
+    this->items->Resize(size + 1);
+
+    for (int i = size; i > 0; i--)
+        this->items->Set(this->items->Get(i - 1), i);
+
+    this->items->Set(item, 0);
 }
 
 template<class T>
-Sequence<T>* ArraySequence<T>::GetSubsequence(int startIndex, int endIndex) {
+void ArraySequence<T>::InsertAtInternal(const T& item, int index) {
 
-    if (startIndex < 0 || startIndex >= items->GetSize() || endIndex < 0 || endIndex >= items->GetSize() || startIndex > endIndex)
+    if (index < 0 || index > this->items->GetSize())
         throw std::out_of_range("Index out of range");
 
-    ArraySequence<T> *subSequence = EmptyArraySequence();
+    int size = this->items->GetSize();
+    this->items->Resize(size + 1);
 
-    for (int i = startIndex; i <= endIndex; i++) {
-        subSequence->AppendInternal(this->Get(i));
-    }
+    for (int i = size; i > index; i--)
+        this->items->Set(this->items->Get(i - 1), i);
 
-    return subSequence;
+    this->items->Set(item, index);
 }
-
-template<class T>
-Sequence<T> *ArraySequence<T>::Concat(Sequence<T> *list) {
-
-    ArraySequence<T> *concat = EmptyArraySequence();
-
-    for (int i = 0; i < this->GetLength(); i++) {
-        concat->AppendInternal(this->Get(i));
-    }
-
-    for (int i = 0; i < list->GetLength(); i++) {
-        concat->AppendInternal(list->Get(i));
-    }
-
-    return concat;
-}
-
 #endif //LABA2_ARRAYSEQUENCE_H

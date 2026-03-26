@@ -12,4 +12,5 @@ add_executable(LABA2 main.cpp
         mutableArraySequence.h
         immutableArraySequence.h
         mutableListSequence.h
-        immutableListSequence.h)
+        immutableListSequence.h
+)

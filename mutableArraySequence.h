@@ -12,12 +12,8 @@ public:
     MutableArraySequence();
     MutableArraySequence(const MutableArraySequence &other);
 
-    ArraySequence<T>* Instance() override;
-    ArraySequence<T>* EmptyArraySequence() const override;
-
-    void AppendInternal(const T& item) override;
-    void PrependInternal(const T& item) override;
-    void InsertAtInternal(const T& item, int index) override;
+    Sequence<T>* Instance() override;
+    Sequence<T>* CreateEmptySequence() const override;
 
 };
 
@@ -34,48 +30,12 @@ MutableArraySequence<T>::MutableArraySequence(const MutableArraySequence<T> &oth
     : ArraySequence<T>(other) {}
 
 template<class T>
-ArraySequence<T>* MutableArraySequence<T>::Instance() {
+Sequence<T>* MutableArraySequence<T>::Instance() {
     return this;
 }
 
 template<class T>
-ArraySequence<T>* MutableArraySequence<T>::EmptyArraySequence() const {
+Sequence<T>* MutableArraySequence<T>::CreateEmptySequence() const {
     return new MutableArraySequence<T>();
 }
-
-template<class T>
-void MutableArraySequence<T>::AppendInternal(const T& item) {
-    int index_free = this->items->GetSize();
-
-    this->items->Resize(index_free + 1);
-    this->items->Set(item, index_free);
-}
-
-template<class T>
-void MutableArraySequence<T>::PrependInternal(const T& item) {
-
-    int size = this->items->GetSize();
-    this->items->Resize(size + 1);
-
-    for (int i = size; i > 0; i--)
-        this->items->Set(this->items->Get(i - 1), i);
-
-    this->items->Set(item, 0);
-}
-
-template<class T>
-void MutableArraySequence<T>::InsertAtInternal(const T& item, int index) {
-
-    if (index < 0 || index > this->items->GetSize())
-        throw std::out_of_range("Index out of range");
-
-    int size = this->items->GetSize();
-    this->items->Resize(size + 1);
-
-    for (int i = size; i > index; i--) {
-        this->items->Set(this->items->Get(i - 1), i);
-    }
-    this->items->Set(item, index);
-}
-
 #endif //LABA2_MUTABLEARRAYSEQUENCE_H
