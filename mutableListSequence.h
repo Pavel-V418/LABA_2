@@ -12,12 +12,8 @@ public:
     MutableListSequence();
     MutableListSequence(const MutableListSequence &other);
 
-    ListSequence<T>* Instance() override;
-    ListSequence<T>* EmptyListSequence() const override;
-
-    void AppendInternal(const T& item) override;
-    void PrependInternal(const T& item) override;
-    void InsertAtInternal(const T& item, int index) override;
+    Sequence<T>* Instance() override;
+    Sequence<T>* CreateEmptySequence() const override;
 };
 
 template<class T>
@@ -33,29 +29,13 @@ MutableListSequence<T>::MutableListSequence(const MutableListSequence &other)
     : ListSequence<T>(other) {}
 
 template<class T>
-ListSequence<T>* MutableListSequence<T>::Instance() {
+Sequence<T>* MutableListSequence<T>::Instance() {
     return this;
 }
 
 template<class T>
-ListSequence<T> *MutableListSequence<T>::EmptyListSequence() const{
+Sequence<T>* MutableListSequence<T>::CreateEmptySequence() const{
     return new MutableListSequence<T>();
 }
-
-template<class T>
-void MutableListSequence<T>::AppendInternal(const T& item) {
-    this->items->Append(item);
-}
-
-template<class T>
-void MutableListSequence<T>::PrependInternal(const T& item) {
-    this->items->Prepend(item);
-}
-
-template<class T>
-void MutableListSequence<T>::InsertAtInternal(const T& item, int index) {
-    this->items->InsertAt(item, index);
-}
-
 
 #endif //LABA2_MUTABLELISTSEQUENCE_H

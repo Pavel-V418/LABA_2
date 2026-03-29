@@ -3,6 +3,7 @@
 
 #include "dynamicArray.h"
 #include "sequence.h"
+#include " Enumerators/array_enumerator.h"
 
 template <class T>
 class ArraySequence : public Sequence<T>{
@@ -16,6 +17,8 @@ public:
 
     // destructor
     ~ArraySequence() override;
+
+    IEnumerator<T> *GetEnumerator() const override;
 
     // Operations
     void AppendInternal(const T& item) override;
@@ -54,6 +57,12 @@ ArraySequence<T>::ArraySequence(const ArraySequence& arraySequence) {
 template<class T>
 ArraySequence<T>::~ArraySequence() {
     delete items;
+}
+
+/*============ Итератор ============ */
+template<class T>
+IEnumerator<T>* ArraySequence<T>::GetEnumerator() const {
+    return new ArrayEnumerator<T>(this->items);
 }
 
 /*============ ГЕТТЕРЫ ============ */

@@ -11,8 +11,8 @@ public:
     ImmutableListSequence();
     ImmutableListSequence(const ImmutableListSequence &other);
 
-    ListSequence<T>* Instance() override;
-    ListSequence<T>* EmptyListSequence() const override;
+    Sequence<T>* Instance() override;
+    Sequence<T>* CreateEmptySequence() const override;
 
     void AppendInternal(const T& item) override;
     void PrependInternal(const T& item) override;
@@ -33,29 +33,13 @@ ImmutableListSequence<T>::ImmutableListSequence(const ImmutableListSequence &oth
     : ListSequence<T>(other) {}
 
 template<class T>
-ListSequence<T>* ImmutableListSequence<T>::Instance() {
+Sequence<T>* ImmutableListSequence<T>::Instance() {
     return new ImmutableListSequence<T>(*this);
 }
 
 template<class T>
-ListSequence<T> *ImmutableListSequence<T>::EmptyListSequence() const {
+Sequence<T> *ImmutableListSequence<T>::EmptyListSequence() const {
     return new ImmutableListSequence<T>();
 }
-
-template<class T>
-void ImmutableListSequence<T>::AppendInternal(const T& item) {
-    this->items->Append(item);
-}
-
-template<class T>
-void ImmutableListSequence<T>::PrependInternal(const T& item) {
-    this->items->Prepend(item);
-}
-
-template<class T>
-void ImmutableListSequence<T>::InsertAtInternal(const T& item, int index) {
-    this->items->InsertAt(index, item);
-}
-
 
 #endif //LABA2_IMMUTABLELISTSEQUENCE_H

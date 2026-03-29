@@ -14,7 +14,6 @@ public:
 
     Sequence<T>* Instance() override;
     Sequence<T>* CreateEmptySequence() const override;
-
 };
 
 template<class T>

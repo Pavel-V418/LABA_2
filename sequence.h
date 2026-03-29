@@ -1,13 +1,17 @@
 #ifndef LABA2_SEQUENCE_H
 #define LABA2_SEQUENCE_H
 
+#include "i_enumerable.h"
+
 template <class T>
-class Sequence {
+class Sequence : public i_enumerable<T>{
 
 public:
 
     // деструкторы
     virtual ~Sequence() = default; //?
+
+    virtual IEnumerator<T>* GetEnumerator() const override = 0;
 
     virtual Sequence<T>* Instance() = 0;
     virtual Sequence<T>* CreateEmptySequence() const = 0;
@@ -62,13 +66,19 @@ Sequence<T>* Sequence<T>::Concat(Sequence<T> *list) {
 
     Sequence<T> *concat = CreateEmptySequence();
 
-    for (int i = 0; i < this->GetLength(); i++) {
-        concat->AppendInternal(this->Get(i)); // переделать!!!
-    }
+    auto it1 = this->GetEnumerator();
 
-    for (int i = 0; i < list->GetLength(); i++) {
-        concat->AppendInternal(list->Get(i)); // переделать!!!
-    }
+    while (it1->HasNext())
+        concat->AppendInternal(it1->Next());
+
+    delete it1;
+
+    auto it2 = this->GetEnumerator();
+
+    while (it2->HasNext())
+        concat->AppendInternal(it2->Next());
+
+    delete it2;
 
     return concat;
 }
@@ -82,10 +92,19 @@ Sequence<T>* Sequence<T>::GetSubsequence(int startIndex, int endIndex) {
 
     Sequence<T> *subSequence = this->CreateEmptySequence();
 
-    for (int i = startIndex; i <= endIndex; i++) {
-        subSequence->AppendInternal(this->Get(i)); // переделать!!!
+    auto it = this->GetEnumerator();
+    int index = 0;
+
+    while (it->HasNext()) {
+        const T& value = it->Next();
+
+        if (index >= startIndex && index <= endIndex)
+            subSequence->AppendInternal(value);
+
+        index++;
     }
 
+    delete it;
     return subSequence;
 }
 

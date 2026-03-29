@@ -17,6 +17,7 @@ public:
     const T& GetFirst() const;
     const T& GetLast() const;
     const T& Get(int index) const;
+    const T& GetHead() const;
 
     LinkedList<T>* GetSubList(int startIndex, int endIndex); // сл этап
 
@@ -126,6 +127,11 @@ const T& LinkedList<T>::Get(int index) const {
 template<class T>
 int LinkedList<T>::GetLength() const{
     return length;
+}
+
+template<class T>
+const T &LinkedList<T>::GetHead() const {
+    return head;
 }
 
 template<class T>
