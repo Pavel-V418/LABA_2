@@ -2,6 +2,7 @@
 #define LABA2_SEQUENCE_H
 
 #include "i_enumerable.h"
+#include <stdexcept>
 
 template <class T>
 class Sequence : public i_enumerable<T>{
@@ -11,7 +12,7 @@ public:
     // деструкторы
     virtual ~Sequence() = default; //?
 
-    virtual IEnumerator<T>* GetEnumerator() const override = 0;
+    virtual IEnumerator<T>* GetEnumerator() const = 0;
 
     virtual Sequence<T>* Instance() = 0;
     virtual Sequence<T>* CreateEmptySequence() const = 0;
@@ -29,11 +30,15 @@ public:
     Sequence<T>* Prepend(const T& item);
     Sequence<T>* InsertAt(const T& item, int index);
 
-    Sequence<T>* Concat(Sequence<T> *list);
+    Sequence<T>* Concat(const Sequence<T> *list);
 
     virtual void AppendInternal(const T& item) = 0;
     virtual void PrependInternal(const T& item) = 0;
     virtual void InsertAtInternal(const T& item, int index) = 0;
+
+    Sequence<T>* Map(T(*func)(const T&));
+    Sequence<T>* Where(bool(*pred)(const T&));
+    T Reduce(T(*func)(const T&, const T&), const T& init_value);
 
 };
 
@@ -62,9 +67,9 @@ Sequence<T>* Sequence<T>::InsertAt(const T& item, int index) {
 }
 
 template<class T>
-Sequence<T>* Sequence<T>::Concat(Sequence<T> *list) {
+Sequence<T>* Sequence<T>::Concat(const Sequence<T> *list) {
 
-    Sequence<T> *concat = CreateEmptySequence();
+    Sequence<T> *concat = this->CreateEmptySequence();
 
     auto it1 = this->GetEnumerator();
 
@@ -73,7 +78,7 @@ Sequence<T>* Sequence<T>::Concat(Sequence<T> *list) {
 
     delete it1;
 
-    auto it2 = this->GetEnumerator();
+    auto it2 = list->GetEnumerator();
 
     while (it2->HasNext())
         concat->AppendInternal(it2->Next());
@@ -108,4 +113,44 @@ Sequence<T>* Sequence<T>::GetSubsequence(int startIndex, int endIndex) {
     return subSequence;
 }
 
+template<class T>
+Sequence<T>* Sequence<T>::Map(T (*func)(const T&)) {
+    Sequence<T> *result = this->CreateEmptySequence();
+
+    auto it = this->GetEnumerator();
+    while (it->HasNext())
+        result->AppendInternal(func(it->Next()));
+
+    delete it;
+    return result;
+}
+
+template<class T>
+Sequence<T>* Sequence<T>::Where(bool (*pred)(const T&)) {
+    Sequence<T> *result = this->CreateEmptySequence();
+
+    auto it = this->GetEnumerator();
+
+    while (it->HasNext()) {
+        const T& value = it->Next();
+        if (pred(value))
+            result->AppendInternal(value);
+    }
+
+    delete it;
+    return result;
+}
+
+template<class T>
+T Sequence<T>::Reduce(T (*func)(const T&, const T&), const T& init_value) {
+    T value = init_value;
+
+    auto it = this->GetEnumerator();
+
+    while (it->HasNext())
+        value = func(value, it->Next());
+
+    delete it;
+    return value;
+}
 #endif //LABA2_SEQUENCE_H
