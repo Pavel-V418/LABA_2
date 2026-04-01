@@ -2,8 +2,25 @@
 #define LABA2_LINKEDLIST_H
 #include <stdexcept>
 
+#include "i_enumerator.h"
 template <class T>
 class LinkedList {
+
+private:
+    struct Node {
+        T data; // T здесь используем для хранения объекта, поэтому не ссылка
+        Node *next;//
+
+        Node(T value) {
+            data = value;
+            next = nullptr;
+        }
+    };
+
+    Node *head;
+    Node *tail;
+    int length;
+
 public:
     // constructors
     LinkedList(const T *element, int count);
@@ -28,22 +45,31 @@ public:
     void Prepend(const T& element); // добавить в начало
     void InsertAt(const T& element, int index); // добавить в заданную позицию // сл этап
 
-    LinkedList<T>* Concat(LinkedList<T> *list); // сл этап
+    LinkedList<T>* Concat(LinkedList<T> *list);
 
-private:
-    struct Node {
-        T data; // T здесь используем для хранения объекта, поэтому не ссылка
-        Node *next;//
+    // итератор
+    class ListEnumerator : public IEnumerator<T> {
 
-        Node(T value) {
-            data = value;
-            next = nullptr;
+    public:
+        ListEnumerator(const Node *head)
+            : current(head) {}
+
+        bool HasNext() override {
+            return current != nullptr;
         }
+
+        const T& Next() override {
+            const T& value = current->data;
+
+            current = current->next;
+
+            return value;
+        }
+
+    private:
+        const Node *current;
     };
 
-    Node *head;
-    Node *tail;
-    int length;
 };
 
 /*============ КОНСТРУКТОРЫ ============*/

@@ -3,9 +3,10 @@
 
 #include "i_enumerable.h"
 #include <stdexcept>
+#include <ostream>
 
 template <class T>
-class Sequence : public i_enumerable<T>{
+class Sequence : public IEnumerable<T>{
 
 public:
 
@@ -30,7 +31,7 @@ public:
     Sequence<T>* Prepend(const T& item);
     Sequence<T>* InsertAt(const T& item, int index);
 
-    Sequence<T>* Concat(const Sequence<T> *list);
+    Sequence<T>* Concat(const Sequence<T> &list);
 
     virtual void AppendInternal(const T& item) = 0;
     virtual void PrependInternal(const T& item) = 0;
@@ -40,6 +41,9 @@ public:
     Sequence<T>* Where(bool(*pred)(const T&));
     T Reduce(T(*func)(const T&, const T&), const T& init_value);
 
+    const T& operator[](int index) const;
+    bool operator==(const Sequence<T> &other) const;
+    Sequence<T>* operator+(const Sequence<T> &other) const;
 };
 
 template<class T>
@@ -67,7 +71,7 @@ Sequence<T>* Sequence<T>::InsertAt(const T& item, int index) {
 }
 
 template<class T>
-Sequence<T>* Sequence<T>::Concat(const Sequence<T> *list) {
+Sequence<T>* Sequence<T>::Concat(const Sequence<T> &list) {
 
     Sequence<T> *concat = this->CreateEmptySequence();
 
@@ -78,7 +82,7 @@ Sequence<T>* Sequence<T>::Concat(const Sequence<T> *list) {
 
     delete it1;
 
-    auto it2 = list->GetEnumerator();
+    auto it2 = list.GetEnumerator();
 
     while (it2->HasNext())
         concat->AppendInternal(it2->Next());
@@ -153,4 +157,60 @@ T Sequence<T>::Reduce(T (*func)(const T&, const T&), const T& init_value) {
     delete it;
     return value;
 }
+
+template<class T>
+const T& Sequence<T>::operator[](int index) const {
+    return this->Get(index);
+}
+
+template<class T>
+bool Sequence<T>::operator==(const Sequence<T> &other) const { // нужен ли?
+    if (this->GetLength() != other.GetLength())
+        return false;
+
+    if (this == &other) // проверка на то, указатель на одинаковые ли объекты
+        return true;
+
+    auto it1 = this->GetEnumerator();
+    auto it2 = other.GetEnumerator();
+
+    while (it1->HasNext() && it2->HasNext()) {
+        if (it1->Next() != it2->Next()) {
+            delete it1;
+            delete it2;
+
+            return false;
+        }
+    }
+
+    delete it1;
+    delete it2;
+
+    return true;
+}
+
+template<class T>
+Sequence<T> *Sequence<T>::operator+(const Sequence<T> &other) const{
+    return this->Concat(other);
+}
+
+template<class T>
+std::ostream& operator<<(std::ostream &os, const Sequence<T> &seq) { // 1 параметр - ссылка куда мы пишем
+    auto it = seq.GetEnumerator();
+
+    os << "["; // вывод открывающей скобки
+
+    while (it->HasNext()) {
+        os << it->Next();
+
+        if (it->HasNext())
+            os << ", ";
+    }
+
+    os << "]";
+
+    delete it;
+    return os;
+}
+
 #endif //LABA2_SEQUENCE_H

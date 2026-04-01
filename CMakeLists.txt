@@ -15,6 +15,5 @@ add_executable(LABA2 main.cpp
         immutableListSequence.h
         i_enumerator.h
         i_enumerable.h
-        " Enumerators/ArrayEnumerator.h"
-        " Enumerators/list_enumerator.h"
+
 )

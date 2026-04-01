@@ -2,8 +2,13 @@
 #define LABA2_DYNAMICARRAY_H
 #include <stdexcept>
 
+#include "i_enumerator.h"
+
 template <class T>
 class DynamicArray {
+private:
+    T *data;
+    int size;
 
 public:
     // constuctors - способы создания массива
@@ -22,9 +27,29 @@ public:
     void Set(const T& value, int index);
     void Resize(int newSize);
 
-private:
-    T *data;
-    int size;
+    // итератор
+    class ArrayEnumerator : public IEnumerator<T> {
+
+    public:
+        ArrayEnumerator(const DynamicArray<T> *arr)
+            : array(arr), index(0) {}
+
+        bool HasNext() override{
+            return index < array->GetSize();
+        }
+
+        const T& Next() override{
+            if (!HasNext())
+                throw std::out_of_range("ArrayEnumerator::Next");
+
+            return array->Get(index++); // вернуть текущий элемент и передвинуться на следующий
+        }
+
+    private:
+        const DynamicArray<T> *array;
+        int index;
+    };
+
 };
 
 template<class T>

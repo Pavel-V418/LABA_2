@@ -3,7 +3,6 @@
 
 #include "dynamicArray.h"
 #include "sequence.h"
-#include " Enumerators/array_enumerator.h"
 
 template <class T>
 class ArraySequence : public Sequence<T>{

@@ -3,7 +3,6 @@
 
 #include "linkedList.h"
 #include "sequence.h"
-#include " Enumerators/list_enumerator.h"
 
 template <class T>
 class ListSequence : public Sequence<T> {
