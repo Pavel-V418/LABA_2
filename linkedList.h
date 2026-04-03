@@ -34,7 +34,7 @@ public:
     const T& GetFirst() const;
     const T& GetLast() const;
     const T& Get(int index) const;
-    const T& GetHead() const;
+    Node* GetHead() const;
 
     LinkedList<T>* GetSubList(int startIndex, int endIndex); // сл этап
 
@@ -44,6 +44,7 @@ public:
     void Append(const T& element); // добавить в конец
     void Prepend(const T& element); // добавить в начало
     void InsertAt(const T& element, int index); // добавить в заданную позицию // сл этап
+    void RemoveAt(int index);
 
     LinkedList<T>* Concat(LinkedList<T> *list);
 
@@ -151,13 +152,13 @@ const T& LinkedList<T>::Get(int index) const {
 }
 
 template<class T>
-int LinkedList<T>::GetLength() const{
-    return length;
+typename LinkedList<T>::Node* LinkedList<T>::GetHead() const {
+    return head;
 }
 
 template<class T>
-const T &LinkedList<T>::GetHead() const {
-    return head;
+int LinkedList<T>::GetLength() const{
+    return length;
 }
 
 template<class T>
@@ -239,6 +240,42 @@ void LinkedList<T>::InsertAt(const T& element, int index) {
     prev->next = newNode;
 
     length++;
+}
+
+template<class T>
+void LinkedList<T>::RemoveAt(int index) {
+
+    if (index < 0 || index >= length)
+        throw std::out_of_range("Index out of range");
+
+    if (index == 0) {
+        Node *to_delete = head;
+        head = head->next;
+
+        delete to_delete;
+        length--;
+
+        if (length == 0)
+            tail = nullptr;
+
+        return;
+    }
+
+    Node *prev = head;
+    for (int i = 0; i < index - 1; i++) {
+        prev = prev->next;
+    }
+
+    Node *to_delete = prev->next;
+
+    prev->next = to_delete->next;
+
+    if (to_delete == tail) {
+        tail = prev;
+    }
+
+    delete to_delete;
+    length--;
 }
 
 template<class T>

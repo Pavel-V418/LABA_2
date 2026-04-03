@@ -4,6 +4,7 @@
 #include "i_enumerable.h"
 #include <stdexcept>
 #include <ostream>
+#include "option.h"
 
 template <class T>
 class Sequence : public IEnumerable<T>{
@@ -25,22 +26,33 @@ public:
 
     virtual int GetLength() const = 0;
 
-    Sequence<T>* GetSubsequence(int startIndex, int endIndex);
+    // Options Try-functions
+    Option<T> TryGetFirst() const;
+    Option<T> TryGetLast() const;
+    Option<T> TryGet(int index) const;
 
+    // main functions
     Sequence<T>* Append(const T& item);
     Sequence<T>* Prepend(const T& item);
     Sequence<T>* InsertAt(const T& item, int index);
+    Sequence<T>* RemoveAt(int index);
 
+    Sequence<T>* GetSubsequence(int startIndex, int endIndex);
     Sequence<T>* Concat(const Sequence<T> &list);
 
+    // internal functions
     virtual void AppendInternal(const T& item) = 0;
     virtual void PrependInternal(const T& item) = 0;
     virtual void InsertAtInternal(const T& item, int index) = 0;
+    virtual void RemoveAtInternal(int index) = 0;
 
+
+    // Map-Reduse functions
     Sequence<T>* Map(T(*func)(const T&));
     Sequence<T>* Where(bool(*pred)(const T&));
     T Reduce(T(*func)(const T&, const T&), const T& init_value);
 
+    // operators overload
     const T& operator[](int index) const;
     bool operator==(const Sequence<T> &other) const;
     Sequence<T>* operator+(const Sequence<T> &other) const;
@@ -66,6 +78,18 @@ template<class T>
 Sequence<T>* Sequence<T>::InsertAt(const T& item, int index) {
     Sequence<T> *inst = Instance();
     inst->InsertAtInternal(item, index);
+
+    return inst;
+}
+
+template<class T>
+Sequence<T>* Sequence<T>::RemoveAt(int index) {
+
+    if (index < 0 || index >= GetLength())
+        throw std::out_of_range("Index out of range");
+
+    Sequence<T>* inst = Instance();
+    inst->RemoveAtInternal(index);
 
     return inst;
 }
@@ -198,7 +222,7 @@ template<class T>
 std::ostream& operator<<(std::ostream &os, const Sequence<T> &seq) { // 1 параметр - ссылка куда мы пишем
     auto it = seq.GetEnumerator();
 
-    os << "["; // вывод открывающей скобки
+    os << "[";
 
     while (it->HasNext()) {
         os << it->Next();
@@ -212,5 +236,31 @@ std::ostream& operator<<(std::ostream &os, const Sequence<T> &seq) { // 1 пар
     delete it;
     return os;
 }
+
+// option's functions
+template<class T>
+Option<T> Sequence<T>::TryGetFirst() const{
+    if (this->GetLength() == 0)
+        return Option<T>(); // = false, те sequence пустой
+
+    return Option<T>(this->GetFirst()); // вернется Option, внутри которого has_value = true, value_ - найденный элемент
+}
+
+template<class T>
+Option<T> Sequence<T>::TryGetLast() const{
+    if (this->GetLength() == 0)
+        return Option<T>();
+
+    return Option<T>(this->GetLast());
+}
+
+template<class T>
+Option<T> Sequence<T>::TryGet(int index) const{
+    if (index > this->GetLength() || index < 0)
+        return Option<T>();
+
+    return Option<T>(this->Get(index));
+}
+
 
 #endif //LABA2_SEQUENCE_H

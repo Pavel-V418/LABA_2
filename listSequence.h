@@ -22,7 +22,7 @@ public:
     void AppendInternal(const T& item) override;
     void PrependInternal(const T& item) override;
     void InsertAtInternal(const T& item, int index) override;
-
+    void RemoveAtInternal(int index) override;
     //
     const T& GetFirst() const override;
     const T& GetLast() const override;
@@ -59,7 +59,7 @@ ListSequence<T>::~ListSequence() {
 
 template<class T>
 IEnumerator<T> *ListSequence<T>::GetEnumerator() const {
-    return new IEnumerator<T>(this->items->GetHead());
+    return new typename LinkedList<T>::ListEnumerator(this->items->GetHead());
 }
 
 template<class T>
@@ -95,5 +95,14 @@ void ListSequence<T>::PrependInternal(const T &item) {
 template<class T>
 void ListSequence<T>::InsertAtInternal(const T& item, int index) {
     this->items->InsertAt(item, index);
+}
+
+template<class T>
+void ListSequence<T>::RemoveAtInternal(int index) {
+
+    if (index < 0 || index >= GetLength())
+        throw std::out_of_range("Index out of range");
+
+    this->items->RemoveAt(index);
 }
 #endif //LABA2_LISTSEQUENCE_H

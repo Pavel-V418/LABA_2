@@ -23,15 +23,16 @@ public:
     void AppendInternal(const T& item) override;
     void PrependInternal(const T& item) override;
     void InsertAtInternal(const T& item, int index) override;
+    void RemoveAtInternal(int index) override;
 
-    // Decompositions
+    // Getters
     const T& GetFirst() const override;
     const T& GetLast() const override;
     const T& Get(int index) const override;
 
     int GetLength() const override;
 
-protected:
+private:
     DynamicArray<T> *items; // убрать указатель
 };
 
@@ -61,7 +62,7 @@ ArraySequence<T>::~ArraySequence() {
 /*============ Итератор ============ */
 template<class T>
 IEnumerator<T>* ArraySequence<T>::GetEnumerator() const {
-    return new ArrayEnumerator<T>(this->items);
+    return new typename DynamicArray<T>::ArrayEnumerator(this->items);
 }
 
 /*============ ГЕТТЕРЫ ============ */
@@ -102,7 +103,6 @@ void ArraySequence<T>::AppendInternal(const T& item) {
 
 template<class T>
 void ArraySequence<T>::PrependInternal(const T& item) {
-
     int size = this->items->GetSize();
     this->items->Resize(size + 1);
 
@@ -114,7 +114,6 @@ void ArraySequence<T>::PrependInternal(const T& item) {
 
 template<class T>
 void ArraySequence<T>::InsertAtInternal(const T& item, int index) {
-
     if (index < 0 || index > this->items->GetSize())
         throw std::out_of_range("Index out of range");
 
@@ -125,5 +124,19 @@ void ArraySequence<T>::InsertAtInternal(const T& item, int index) {
         this->items->Set(this->items->Get(i - 1), i);
 
     this->items->Set(item, index);
+}
+
+template<class T>
+void ArraySequence<T>::RemoveAtInternal(int index) {
+    int size = this->items->GetSize();
+
+    if (index < 0 || index >= size)
+        throw std::out_of_range("Index out of range");
+
+    for (int i = index; i < size - 1; i++) {
+        this->items->Set(this->items->Get(i + 1), i);
+    }
+
+    this->items->Resize(size - 1);
 }
 #endif //LABA2_ARRAYSEQUENCE_H

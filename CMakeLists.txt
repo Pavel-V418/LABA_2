@@ -15,5 +15,9 @@ add_executable(LABA2 main.cpp
         immutableListSequence.h
         i_enumerator.h
         i_enumerable.h
+        option.h
+        bit.h
+        bitSequence.h
+        bitSequence.cpp
 
 )
