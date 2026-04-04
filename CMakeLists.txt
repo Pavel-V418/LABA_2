@@ -16,8 +16,5 @@ add_executable(LABA2 main.cpp
         i_enumerator.h
         i_enumerable.h
         option.h
-        bit.h
-        bitSequence.h
-        bitSequence.cpp
 
 )
