@@ -19,12 +19,6 @@ public:
 
     IEnumerator<T> *GetEnumerator() const override;
 
-    // Operations
-    void AppendInternal(const T& item) override;
-    void PrependInternal(const T& item) override;
-    void InsertAtInternal(const T& item, int index) override;
-    void RemoveAtInternal(int index) override;
-
     // Getters
     const T& GetFirst() const override;
     const T& GetLast() const override;
@@ -32,8 +26,14 @@ public:
 
     int GetLength() const override;
 
-private:
-    DynamicArray<T> *items; // убрать указатель
+protected:
+    DynamicArray<T> *items;
+
+    // Operations
+    void AppendInternal(const T& item) override;
+    void PrependInternal(const T& item) override;
+    void InsertAtInternal(const T& item, int index) override;
+    void RemoveAtInternal(int index) override;
 };
 
 

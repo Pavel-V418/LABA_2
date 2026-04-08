@@ -12,7 +12,7 @@ class Sequence : public IEnumerable<T>{
 public:
 
     // деструкторы
-    virtual ~Sequence() = default; //?
+    virtual ~Sequence() = default;
 
     virtual IEnumerator<T>* GetEnumerator() const = 0;
 
@@ -40,13 +40,6 @@ public:
     Sequence<T>* GetSubsequence(int startIndex, int endIndex);
     Sequence<T>* Concat(const Sequence<T> &list);
 
-    // internal functions
-    virtual void AppendInternal(const T& item) = 0;
-    virtual void PrependInternal(const T& item) = 0;
-    virtual void InsertAtInternal(const T& item, int index) = 0;
-    virtual void RemoveAtInternal(int index) = 0;
-
-
     // Map-Reduse functions
     Sequence<T>* Map(T(*func)(const T&));
     Sequence<T>* Where(bool(*pred)(const T&));
@@ -56,6 +49,15 @@ public:
     const T& operator[](int index) const;
     bool operator==(const Sequence<T> &other) const;
     Sequence<T>* operator+(const Sequence<T> &other) const;
+
+protected:
+
+    // internal functions
+    virtual void AppendInternal(const T& item) = 0;
+    virtual void PrependInternal(const T& item) = 0;
+    virtual void InsertAtInternal(const T& item, int index) = 0;
+    virtual void RemoveAtInternal(int index) = 0;
+
 };
 
 template<class T>

@@ -9,6 +9,7 @@ class DynamicArray {
 private:
     T *data;
     int size;
+    int capacity;
 
 public:
     // constuctors - способы создания массива
@@ -34,7 +35,7 @@ public:
         ArrayEnumerator(const DynamicArray<T> *arr)
             : array(arr), index(0) {}
 
-        bool HasNext() override{
+        bool HasNext() override{ // has more elemen
             return index < array->GetSize();
         }
 
@@ -55,10 +56,16 @@ public:
 template<class T>
 DynamicArray<T>::DynamicArray(const T *items, int count) {
     if (count < 0)
-        throw std::invalid_argument("Size cannot be negative"); // создается объект ошибки и выполнение фу-и останавливается
+        throw std::invalid_argument("Size cannot be negative");
 
     this->size = count;
-    data = new T[size];
+
+    if (count > 0)
+        capacity = count;
+    else
+        capacity = 1;
+
+    data = new T[capacity];
 
     for (int i = 0; i < size; i++)
         data[i] = items[i];
@@ -70,13 +77,21 @@ DynamicArray<T>::DynamicArray(int size) {
         throw std::invalid_argument("Size cannot be negative");
 
     this->size = size;
-    data = new T[size];
+
+    if (size > 0)
+        capacity = size;
+    else
+        capacity = 1;
+
+    data = new T[capacity];
 }
 
 template<class T>
 DynamicArray<T>::DynamicArray(const DynamicArray<T>& dynamicArray) {
     this->size = dynamicArray.size;
-    data = new T[size];
+    capacity = dynamicArray.capacity;
+
+    data = new T[capacity];
 
     for (int i = 0; i < size; i++)
         data[i] = dynamicArray.data[i];
@@ -91,7 +106,7 @@ template<class T>
 const T& DynamicArray<T>::Get(int index) const{
     if (index < 0 || index >= size)
         throw std::out_of_range("Index out of range");
-    return data[index];
+    return data[index] ; // поместить в итератор
 }
 
 template<class T>
@@ -111,15 +126,19 @@ void DynamicArray<T>::Resize(int newSize) {
     if (newSize < 0)
         throw std::invalid_argument("Size cannot be negative");
 
-    T* newData = new T[newSize];
-    int minSize;
+    if (newSize <= capacity) {
+        size = newSize;
+        return;
+    }
 
-    if (newSize < size)
-        minSize = newSize;
-    else
-        minSize = size;
+    int newCapacity = capacity;
 
-    for (int i = 0; i < minSize; i++)
+    while (newCapacity < newSize)
+        newCapacity *= 2;
+
+    T* newData = new T[newCapacity];
+
+    for (int i = 0; i < size; i++)
         newData[i] = data[i];
 
     delete[] data;

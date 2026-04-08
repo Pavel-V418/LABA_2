@@ -14,10 +14,6 @@ public:
     Sequence<T>* Instance() override;
     Sequence<T>* CreateEmptySequence() const override;
 
-    void AppendInternal(const T& item) override;
-    void PrependInternal(const T& item) override;
-    void InsertAtInternal(const T& item, int index) override;
-
 };
 
 template<class T>
@@ -38,7 +34,7 @@ Sequence<T>* ImmutableListSequence<T>::Instance() {
 }
 
 template<class T>
-Sequence<T> *ImmutableListSequence<T>::EmptyListSequence() const {
+Sequence<T> *ImmutableListSequence<T>::CreateEmptySequence() const {
     return new ImmutableListSequence<T>();
 }
 

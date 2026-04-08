@@ -18,11 +18,6 @@ public:
     ~ListSequence() override;
 
     IEnumerator<T>* GetEnumerator() const override;
-
-    void AppendInternal(const T& item) override;
-    void PrependInternal(const T& item) override;
-    void InsertAtInternal(const T& item, int index) override;
-    void RemoveAtInternal(int index) override;
     //
     const T& GetFirst() const override;
     const T& GetLast() const override;
@@ -32,6 +27,11 @@ public:
 
 protected:
     LinkedList<T> *items;
+
+    void AppendInternal(const T& item) override;
+    void PrependInternal(const T& item) override;
+    void InsertAtInternal(const T& item, int index) override;
+    void RemoveAtInternal(int index) override;
 
 };
 

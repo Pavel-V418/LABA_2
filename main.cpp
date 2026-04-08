@@ -1,16 +1,376 @@
 #include <iostream>
 
-// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-int main() {
-    // TIP Press <shortcut actionId="RenameElement"/> when your caret is at the <b>lang</b> variable name to see how CLion can help you rename it.
-    auto lang = "C++";
-    std::cout << "Hello and welcome to " << lang << "!\n";
+#include "sequence.h"
 
-    for (int i = 1; i <= 5; i++) {
-        // TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        std::cout << "i = " << i << std::endl;
+#include "mutableArraySequence.h"
+#include "immutableArraySequence.h"
+
+#include "mutableListSequence.h"
+#include "immutableListSequence.h"
+
+
+
+int ReadInt()
+{
+    int value;
+
+    while (true)
+    {
+        if (std::cin >> value)
+            return value;
+
+        std::cout << "Invalid input. Enter number: ";
+
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    }
+}
+
+
+
+int MultiplyBy2(const int& x)
+{
+    return x * 2;
+}
+
+bool IsEven(const int& x)
+{
+    return x % 2 == 0;
+}
+
+int Sum(const int& a, const int& b)
+{
+    return a + b;
+}
+
+
+
+void PrintSequence(Sequence<int>* seq)
+{
+    std::cout << "[ ";
+
+    for (int i = 0; i < seq->GetLength(); i++)
+        std::cout << seq->Get(i) << " ";
+
+    std::cout << "]\n";
+}
+
+
+
+void SequenceMenu(Sequence<int>* seq)
+{
+    int choice = -1;
+
+    while (choice != 0)
+    {
+        std::cout << "\n===== OPERATIONS =====\n";
+        std::cout << "1  Append\n";
+        std::cout << "2  Prepend\n";
+        std::cout << "3  InsertAt\n";
+        std::cout << "4  RemoveAt\n";
+        std::cout << "5  Get\n";
+        std::cout << "6  GetFirst\n";
+        std::cout << "7  GetLast\n";
+        std::cout << "8  Length\n";
+        std::cout << "9  Subsequence\n";
+        std::cout << "10 Concat\n";
+        std::cout << "11 Map (*2)\n";
+        std::cout << "12 Where (even)\n";
+        std::cout << "13 Reduce (sum)\n";
+        std::cout << "14 Print\n";
+        std::cout << "0  Back\n";
+
+        std::cout << "Choose operation: ";
+        choice = ReadInt();
+
+
+
+        if (choice == 1)
+        {
+            std::cout << "Enter value: ";
+            int value = ReadInt();
+
+            Sequence<int>* newSeq = seq->Append(value);
+
+            if (newSeq != seq)
+            {
+                delete seq;
+                seq = newSeq;
+            }
+        }
+
+
+
+        else if (choice == 2)
+        {
+            std::cout << "Enter value: ";
+            int value = ReadInt();
+
+            Sequence<int>* newSeq = seq->Prepend(value);
+
+            if (newSeq != seq)
+            {
+                delete seq;
+                seq = newSeq;
+            }
+        }
+
+
+
+        else if (choice == 3)
+        {
+            std::cout << "Enter value: ";
+            int value = ReadInt();
+
+            std::cout << "Enter index: ";
+            int index = ReadInt();
+
+            try
+            {
+                Sequence<int>* newSeq = seq->InsertAt(value, index);
+
+                if (newSeq != seq)
+                {
+                    delete seq;
+                    seq = newSeq;
+                }
+            }
+            catch (...)
+            {
+                std::cout << "Invalid index\n";
+            }
+        }
+
+
+
+        else if (choice == 4)
+        {
+            std::cout << "Enter index: ";
+            int index = ReadInt();
+
+            try
+            {
+                Sequence<int>* newSeq = seq->RemoveAt(index);
+
+                if (newSeq != seq)
+                {
+                    delete seq;
+                    seq = newSeq;
+                }
+            }
+            catch (...)
+            {
+                std::cout << "Invalid index\n";
+            }
+        }
+
+
+
+        else if (choice == 5)
+        {
+            std::cout << "Enter index: ";
+            int index = ReadInt();
+
+            try
+            {
+                std::cout << "Value: " << seq->Get(index) << "\n";
+            }
+            catch (...)
+            {
+                std::cout << "Invalid index\n";
+            }
+        }
+
+
+
+        else if (choice == 6)
+        {
+            try
+            {
+                std::cout << "First element: " << seq->GetFirst() << "\n";
+            }
+            catch (...)
+            {
+                std::cout << "Sequence is empty\n";
+            }
+        }
+
+
+
+        else if (choice == 7)
+        {
+            try
+            {
+                std::cout << "Last element: " << seq->GetLast() << "\n";
+            }
+            catch (...)
+            {
+                std::cout << "Sequence is empty\n";
+            }
+        }
+
+
+
+        else if (choice == 8)
+        {
+            std::cout << "Length: " << seq->GetLength() << "\n";
+        }
+
+
+
+        else if (choice == 9)
+        {
+            std::cout << "Enter start index: ";
+            int l = ReadInt();
+
+            std::cout << "Enter end index: ";
+            int r = ReadInt();
+
+            try
+            {
+                Sequence<int>* sub = seq->GetSubsequence(l, r);
+
+                std::cout << "Subsequence: " << *sub << "\n";
+
+                delete sub;
+            }
+            catch (...)
+            {
+                std::cout << "Invalid indices\n";
+            }
+        }
+
+
+
+        else if (choice == 10)
+        {
+            std::cout << "Enter number of elements to concat: ";
+            int n = ReadInt();
+
+            Sequence<int>* other = seq->CreateEmptySequence();
+
+            std::cout << "Enter elements:\n";
+
+            for (int i = 0; i < n; i++)
+            {
+                int x = ReadInt();
+                other->Append(x);
+            }
+
+            Sequence<int>* result = seq->Concat(*other);
+
+            delete seq;
+            delete other;
+
+            seq = result;
+        }
+
+
+
+        else if (choice == 11)
+        {
+            std::cout << "Applying map (*2)...\n";
+
+            Sequence<int>* result = seq->Map(MultiplyBy2);
+
+            delete seq;
+            seq = result;
+        }
+
+
+
+        else if (choice == 12)
+        {
+            std::cout << "Filtering even numbers...\n";
+
+            Sequence<int>* result = seq->Where(IsEven);
+
+            delete seq;
+            seq = result;
+        }
+
+
+
+        else if (choice == 13)
+        {
+            int result = seq->Reduce(Sum, 0);
+
+            std::cout << "Reduce result: " << result << "\n";
+        }
+
+
+
+        else if (choice == 14)
+        {
+            std::cout << "Sequence: " << *seq << "\n";
+        }
+    }
+
+    delete seq;
+}
+
+
+
+Sequence<int>* CreateArraySequence()
+{
+    std::cout << "\nArraySequence type:\n";
+    std::cout << "1. Mutable\n";
+    std::cout << "2. Immutable\n";
+    std::cout << "Choice: ";
+
+    int type = ReadInt();
+
+    if (type == 1)
+        return new MutableArraySequence<int>();
+    else
+        return new ImmutableArraySequence<int>();
+}
+
+
+
+Sequence<int>* CreateListSequence()
+{
+    std::cout << "\nListSequence type:\n";
+    std::cout << "1. Mutable\n";
+    std::cout << "2. Immutable\n";
+    std::cout << "Choice: ";
+
+    int type = ReadInt();
+
+    if (type == 1)
+        return new MutableListSequence<int>();
+    else
+        return new ImmutableListSequence<int>();
+}
+
+
+
+int main()
+{
+    int choice = -1;
+
+    while (choice != 0)
+    {
+        std::cout << "\n===== MAIN MENU =====\n";
+        std::cout << "1. ArraySequence\n";
+        std::cout << "2. ListSequence\n";
+        std::cout << "0. Exit\n";
+
+        std::cout << "Choice: ";
+        choice = ReadInt();
+
+        if (choice == 1)
+        {
+            Sequence<int>* seq = CreateArraySequence();
+            SequenceMenu(seq);
+        }
+
+        else if (choice == 2)
+        {
+            Sequence<int>* seq = CreateListSequence();
+            SequenceMenu(seq);
+        }
     }
 
     return 0;
-    // TIP See CLion help at <a href="https://www.jetbrains.com/help/clion/">jetbrains.com/help/clion/</a>. Also, you can try interactive lessons for CLion by selecting 'Help | Learn IDE Features' from the main menu.
 }
