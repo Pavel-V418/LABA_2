@@ -1,84 +1,103 @@
 #include <gtest/gtest.h>
-#include "option.h"
+#include "mutableArraySequence.h"
+#include "mutableListSequence.h"
 
-TEST(Option, DefaultConstructor)
+
+
+TEST(sequence_try, try_get_first_not_empty)
 {
-    Option<int> opt;
+    MutableArraySequence<int> seq;
 
-    EXPECT_FALSE(opt.HasValue());
+    seq.append(10);
+    seq.append(20);
+
+    Option<int> result = seq.try_get_first();
+
+    EXPECT_TRUE(result.has_more_elements());
+    EXPECT_EQ(result.get_value(), 10);
 }
 
 
 
-TEST(Option, ValueConstructor)
+TEST(sequence_try, try_get_first_empty)
 {
-    Option<int> opt(10);
+    MutableArraySequence<int> seq;
 
-    EXPECT_TRUE(opt.HasValue());
-    EXPECT_EQ(opt.GetValue(), 10);
+    Option<int> result = seq.try_get_first();
+
+    EXPECT_FALSE(result.has_more_elements());
 }
 
 
 
-TEST(Option, CopyConstructor)
+TEST(sequence_try, try_get_last)
 {
-    Option<int> opt1(5);
-    Option<int> opt2(opt1);
+    MutableArraySequence<int> seq;
 
-    EXPECT_TRUE(opt2.HasValue());
-    EXPECT_EQ(opt2.GetValue(), 5);
+    seq.append(1);
+    seq.append(2);
+    seq.append(3);
+
+    Option<int> result = seq.try_get_last();
+
+    EXPECT_TRUE(result.has_more_elements());
+    EXPECT_EQ(result.get_value(), 3);
 }
 
 
 
-TEST(Option, AssignmentOperator)
+TEST(sequence_try, try_get_valid_index)
 {
-    Option<int> opt1(7);
-    Option<int> opt2;
+    MutableArraySequence<int> seq;
 
-    opt2 = opt1;
+    seq.append(5);
+    seq.append(6);
+    seq.append(7);
 
-    EXPECT_TRUE(opt2.HasValue());
-    EXPECT_EQ(opt2.GetValue(), 7);
+    Option<int> result = seq.try_get(1);
+
+    EXPECT_TRUE(result.has_more_elements());
+    EXPECT_EQ(result.get_value(), 6);
 }
 
 
 
-TEST(Option, EmptyGetThrows)
+TEST(sequence_try, try_get_invalid_index)
 {
-    Option<int> opt;
+    MutableArraySequence<int> seq;
 
-    EXPECT_THROW(opt.GetValue(), std::runtime_error);
+    seq.append(5);
+    seq.append(6);
+
+    Option<int> result = seq.try_get(10);
+
+    EXPECT_FALSE(result.has_more_elements());
 }
 
 
 
-TEST(Option, CopyEmpty)
+TEST(sequence_try, try_get_negative_index)
 {
-    Option<int> opt1;
-    Option<int> opt2(opt1);
+    MutableArraySequence<int> seq;
 
-    EXPECT_FALSE(opt2.HasValue());
+    seq.append(5);
+
+    Option<int> result = seq.try_get(-1);
+
+    EXPECT_FALSE(result.has_more_elements());
 }
 
 
 
-TEST(Option, AssignmentEmpty)
+TEST(sequence_try, list_sequence_try_get)
 {
-    Option<int> opt1;
-    Option<int> opt2(5);
+    MutableListSequence<int> seq;
 
-    opt2 = opt1;
+    seq.append(1);
+    seq.append(2);
 
-    EXPECT_FALSE(opt2.HasValue());
-}
+    Option<int> result = seq.try_get_first();
 
-
-
-TEST(Option, DifferentTypes)
-{
-    Option<std::string> opt("hello");
-
-    EXPECT_TRUE(opt.HasValue());
-    EXPECT_EQ(opt.GetValue(), "hello");
+    EXPECT_TRUE(result.has_more_elements());
+    EXPECT_EQ(result.get_value(), 1);
 }

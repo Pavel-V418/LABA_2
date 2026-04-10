@@ -1,7 +1,7 @@
 #ifndef LABA2_DYNAMICARRAY_H
 #define LABA2_DYNAMICARRAY_H
-#include <stdexcept>
 
+#include <stdexcept>
 #include "i_enumerator.h"
 
 template <class T>
@@ -21,12 +21,12 @@ public:
     ~DynamicArray();
 
     // Decomposition
-    const T& Get(int index) const;
-    int GetSize() const;
+    const T& get(int index) const;
+    int get_size() const;
 
     // operations
-    void Set(const T& value, int index);
-    void Resize(int newSize);
+    void set(const T& value, int index);
+    void resize(int newSize);
 
     // итератор
     class ArrayEnumerator : public IEnumerator<T> {
@@ -35,15 +35,15 @@ public:
         ArrayEnumerator(const DynamicArray<T> *arr)
             : array(arr), index(0) {}
 
-        bool HasNext() override{ // has more elemen
-            return index < array->GetSize();
+        bool has_more_elements() override{ // has more elemen
+            return index < array->get_size();
         }
 
-        const T& Next() override{
-            if (!HasNext())
+        const T& next() override{
+            if (!has_more_elements())
                 throw std::out_of_range("ArrayEnumerator::Next");
 
-            return array->Get(index++); // вернуть текущий элемент и передвинуться на следующий
+            return array->get(index++); // вернуть текущий элемент и передвинуться на следующий
         }
 
     private:
@@ -103,26 +103,26 @@ DynamicArray<T>::~DynamicArray() {
 }
 
 template<class T>
-const T& DynamicArray<T>::Get(int index) const{
+const T& DynamicArray<T>::get(int index) const{
     if (index < 0 || index >= size)
         throw std::out_of_range("Index out of range");
     return data[index] ; // поместить в итератор
 }
 
 template<class T>
-int DynamicArray<T>::GetSize() const{
+int DynamicArray<T>::get_size() const{
     return size;
 }
 
 template<class T>
-void DynamicArray<T>::Set(const T& value, int index) {
+void DynamicArray<T>::set(const T& value, int index) {
     if (index < 0 || index >= size)
         throw std::out_of_range("Index out of range");
     data[index] = value;
 }
 
 template<class T>
-void DynamicArray<T>::Resize(int newSize) {
+void DynamicArray<T>::resize(int newSize) {
     if (newSize < 0)
         throw std::invalid_argument("Size cannot be negative");
 

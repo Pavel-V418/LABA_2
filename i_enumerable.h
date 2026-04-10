@@ -10,7 +10,7 @@ class IEnumerable {
 public:
     virtual ~IEnumerable() = default;
 
-    virtual IEnumerator<T>* GetEnumerator() const = 0;
+    virtual IEnumerator<T>* get_enumerator() const = 0;
 
 };
 

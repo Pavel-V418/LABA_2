@@ -9,10 +9,10 @@ public:
     virtual ~IEnumerator() = default;
 
     // проверяет, есть ли еще элементы
-    virtual bool HasNext() = 0;
+    virtual bool has_more_elements() = 0;
 
     // возращает текущий элемент и идёт дальше
-    virtual const T& Next() = 0;
+    virtual const T& next() = 0;
 
 };
 

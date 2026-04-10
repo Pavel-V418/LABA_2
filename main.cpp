@@ -1,14 +1,9 @@
 #include <iostream>
-
 #include "sequence.h"
-
 #include "mutableArraySequence.h"
 #include "immutableArraySequence.h"
-
 #include "mutableListSequence.h"
 #include "immutableListSequence.h"
-
-
 
 int ReadInt()
 {
@@ -49,8 +44,8 @@ void PrintSequence(Sequence<int>* seq)
 {
     std::cout << "[ ";
 
-    for (int i = 0; i < seq->GetLength(); i++)
-        std::cout << seq->Get(i) << " ";
+    for (int i = 0; i < seq->get_length(); i++)
+        std::cout << seq->get(i) << " ";
 
     std::cout << "]\n";
 }
@@ -90,7 +85,7 @@ void SequenceMenu(Sequence<int>* seq)
             std::cout << "Enter value: ";
             int value = ReadInt();
 
-            Sequence<int>* newSeq = seq->Append(value);
+            Sequence<int>* newSeq = seq->append(value);
 
             if (newSeq != seq)
             {
@@ -106,7 +101,7 @@ void SequenceMenu(Sequence<int>* seq)
             std::cout << "Enter value: ";
             int value = ReadInt();
 
-            Sequence<int>* newSeq = seq->Prepend(value);
+            Sequence<int>* newSeq = seq->prepend(value);
 
             if (newSeq != seq)
             {
@@ -127,7 +122,7 @@ void SequenceMenu(Sequence<int>* seq)
 
             try
             {
-                Sequence<int>* newSeq = seq->InsertAt(value, index);
+                Sequence<int>* newSeq = seq->insert_at(value, index);
 
                 if (newSeq != seq)
                 {
@@ -150,7 +145,7 @@ void SequenceMenu(Sequence<int>* seq)
 
             try
             {
-                Sequence<int>* newSeq = seq->RemoveAt(index);
+                Sequence<int>* newSeq = seq->remove_at(index);
 
                 if (newSeq != seq)
                 {
@@ -173,7 +168,7 @@ void SequenceMenu(Sequence<int>* seq)
 
             try
             {
-                std::cout << "Value: " << seq->Get(index) << "\n";
+                std::cout << "Value: " << seq->get(index) << "\n";
             }
             catch (...)
             {
@@ -187,7 +182,7 @@ void SequenceMenu(Sequence<int>* seq)
         {
             try
             {
-                std::cout << "First element: " << seq->GetFirst() << "\n";
+                std::cout << "First element: " << seq->get_first() << "\n";
             }
             catch (...)
             {
@@ -201,7 +196,7 @@ void SequenceMenu(Sequence<int>* seq)
         {
             try
             {
-                std::cout << "Last element: " << seq->GetLast() << "\n";
+                std::cout << "Last element: " << seq->get_last() << "\n";
             }
             catch (...)
             {
@@ -213,7 +208,7 @@ void SequenceMenu(Sequence<int>* seq)
 
         else if (choice == 8)
         {
-            std::cout << "Length: " << seq->GetLength() << "\n";
+            std::cout << "Length: " << seq->get_length() << "\n";
         }
 
 
@@ -228,7 +223,7 @@ void SequenceMenu(Sequence<int>* seq)
 
             try
             {
-                Sequence<int>* sub = seq->GetSubsequence(l, r);
+                Sequence<int>* sub = seq->get_sub_sequence(l, r);
 
                 std::cout << "Subsequence: " << *sub << "\n";
 
@@ -247,17 +242,17 @@ void SequenceMenu(Sequence<int>* seq)
             std::cout << "Enter number of elements to concat: ";
             int n = ReadInt();
 
-            Sequence<int>* other = seq->CreateEmptySequence();
+            Sequence<int>* other = seq->create_empty_sequence();
 
             std::cout << "Enter elements:\n";
 
             for (int i = 0; i < n; i++)
             {
                 int x = ReadInt();
-                other->Append(x);
+                other->append(x);
             }
 
-            Sequence<int>* result = seq->Concat(*other);
+            Sequence<int>* result = seq->concat(*other);
 
             delete seq;
             delete other;
@@ -271,7 +266,7 @@ void SequenceMenu(Sequence<int>* seq)
         {
             std::cout << "Applying map (*2)...\n";
 
-            Sequence<int>* result = seq->Map(MultiplyBy2);
+            Sequence<int>* result = seq->map(MultiplyBy2);
 
             delete seq;
             seq = result;
@@ -283,7 +278,7 @@ void SequenceMenu(Sequence<int>* seq)
         {
             std::cout << "Filtering even numbers...\n";
 
-            Sequence<int>* result = seq->Where(IsEven);
+            Sequence<int>* result = seq->where(IsEven);
 
             delete seq;
             seq = result;
@@ -293,7 +288,7 @@ void SequenceMenu(Sequence<int>* seq)
 
         else if (choice == 13)
         {
-            int result = seq->Reduce(Sum, 0);
+            int result = seq->reduce(Sum, 0);
 
             std::cout << "Reduce result: " << result << "\n";
         }

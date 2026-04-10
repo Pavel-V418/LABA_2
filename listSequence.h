@@ -17,21 +17,21 @@ public:
     // destructors
     ~ListSequence() override;
 
-    IEnumerator<T>* GetEnumerator() const override;
+    IEnumerator<T>* get_enumerator() const override;
     //
-    const T& GetFirst() const override;
-    const T& GetLast() const override;
-    const T& Get(int index) const override;
+    const T& get_first() const override;
+    const T& get_last() const override;
+    const T& get(int index) const override;
 
-    int GetLength() const override;
+    int get_length() const override;
 
 protected:
     LinkedList<T> *items;
 
-    void AppendInternal(const T& item) override;
-    void PrependInternal(const T& item) override;
-    void InsertAtInternal(const T& item, int index) override;
-    void RemoveAtInternal(int index) override;
+    void append_internal(const T& item) override;
+    void prepend_internal(const T& item) override;
+    void insert_at_internal(const T& item, int index) override;
+    void remove_at_internal(int index) override;
 
 };
 
@@ -58,51 +58,51 @@ ListSequence<T>::~ListSequence() {
 }
 
 template<class T>
-IEnumerator<T> *ListSequence<T>::GetEnumerator() const {
-    return new typename LinkedList<T>::ListEnumerator(this->items->GetHead());
+IEnumerator<T> *ListSequence<T>::get_enumerator() const {
+    return new typename LinkedList<T>::ListEnumerator(this->items->get_head());
 }
 
 template<class T>
-const T& ListSequence<T>::GetFirst() const {
-    return items->GetFirst();
+const T& ListSequence<T>::get_first() const {
+    return items->get_first();
 }
 
 template<class T>
-const T& ListSequence<T>::GetLast() const {
-    return items->GetLast();
+const T& ListSequence<T>::get_last() const {
+    return items->get_last();
 }
 
 template<class T>
-const T& ListSequence<T>::Get(int index) const {
-    return items->Get(index);
+const T& ListSequence<T>::get(int index) const {
+    return items->get(index);
 }
 
 template<class T>
-int ListSequence<T>::GetLength() const {
-    return items->GetLength();
+int ListSequence<T>::get_length() const {
+    return items->get_length();
 }
 
 template<class T>
-void ListSequence<T>::AppendInternal(const T &item) {
-    this->items->Append(item);
+void ListSequence<T>::append_internal(const T &item) {
+    this->items->append(item);
 }
 
 template<class T>
-void ListSequence<T>::PrependInternal(const T &item) {
-    this->items->Prepend(item);
+void ListSequence<T>::prepend_internal(const T &item) {
+    this->items->prepend(item);
 }
 
 template<class T>
-void ListSequence<T>::InsertAtInternal(const T& item, int index) {
-    this->items->InsertAt(item, index);
+void ListSequence<T>::insert_at_internal(const T& item, int index) {
+    this->items->insert_at(item, index);
 }
 
 template<class T>
-void ListSequence<T>::RemoveAtInternal(int index) {
+void ListSequence<T>::remove_at_internal(int index) {
 
-    if (index < 0 || index >= GetLength())
+    if (index < 0 || index >= get_length())
         throw std::out_of_range("Index out of range");
 
-    this->items->RemoveAt(index);
+    this->items->remove_at(index);
 }
 #endif //LABA2_LISTSEQUENCE_H

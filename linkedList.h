@@ -1,8 +1,9 @@
 #ifndef LABA2_LINKEDLIST_H
 #define LABA2_LINKEDLIST_H
-#include <stdexcept>
 
+#include <stdexcept>
 #include "i_enumerator.h"
+
 template <class T>
 class LinkedList {
 
@@ -31,22 +32,22 @@ public:
     ~LinkedList();
 
     // Decomposition
-    const T& GetFirst() const;
-    const T& GetLast() const;
-    const T& Get(int index) const;
-    Node* GetHead() const;
+    const T& get_first() const;
+    const T& get_last() const;
+    const T& get(int index) const;
+    Node* get_head() const;
 
-    LinkedList<T>* GetSubList(int startIndex, int endIndex); // сл этап
+    LinkedList<T>* get_sub_list(int startIndex, int endIndex); // сл этап
 
-    int GetLength() const;
+    int get_length() const;
 
     // Operations
-    void Append(const T& element); // добавить в конец
-    void Prepend(const T& element); // добавить в начало
-    void InsertAt(const T& element, int index); // добавить в заданную позицию // сл этап
-    void RemoveAt(int index);
+    void append(const T& element); // добавить в конец
+    void prepend(const T& element); // добавить в начало
+    void insert_at(const T& element, int index); // добавить в заданную позицию // сл этап
+    void remove_at(int index);
 
-    LinkedList<T>* Concat(LinkedList<T> *list);
+    LinkedList<T>* concat(LinkedList<T> *list);
 
     // итератор
     class ListEnumerator : public IEnumerator<T> {
@@ -55,11 +56,11 @@ public:
         ListEnumerator(const Node *head)
             : current(head) {}
 
-        bool HasNext() override {
+        bool has_more_elements() override {
             return current != nullptr;
         }
 
-        const T& Next() override {
+        const T& next() override {
             const T& value = current->data;
 
             current = current->next;
@@ -84,7 +85,7 @@ LinkedList<T>::LinkedList(const T *element, int count) {
     length = 0;
 
     for (int i = 0; i < count; i++) {
-        Append(element[i]);
+        append(element[i]);
     }
 }
 
@@ -103,7 +104,7 @@ LinkedList<T>::LinkedList(const LinkedList& list) {
 
     Node *current = list.head;
     while (current != nullptr) {
-        Append(current->data);
+        append(current->data);
         current = current->next;
     }
 }
@@ -125,21 +126,21 @@ LinkedList<T>::~LinkedList() {
 /*============ ГЕТТЕРЫ ============*/
 
 template<class T>
-const T& LinkedList<T>::GetFirst() const{
+const T& LinkedList<T>::get_first() const{
     if (length == 0)
         throw std::out_of_range("Empty list");
     return head->data;
 }
 
 template<class T>
-const T& LinkedList<T>::GetLast() const {
+const T& LinkedList<T>::get_last() const {
     if (length == 0)
         throw std::out_of_range("Empty list");
     return tail->data;
 }
 
 template<class T>
-const T& LinkedList<T>::Get(int index) const {
+const T& LinkedList<T>::get(int index) const {
     if (index < 0 || index >= length)
         throw std::out_of_range("Empty list");
 
@@ -152,17 +153,17 @@ const T& LinkedList<T>::Get(int index) const {
 }
 
 template<class T>
-typename LinkedList<T>::Node* LinkedList<T>::GetHead() const {
+typename LinkedList<T>::Node* LinkedList<T>::get_head() const {
     return head;
 }
 
 template<class T>
-int LinkedList<T>::GetLength() const{
+int LinkedList<T>::get_length() const{
     return length;
 }
 
 template<class T>
-LinkedList<T> *LinkedList<T>::GetSubList(int startIndex, int endIndex) {
+LinkedList<T> *LinkedList<T>::get_sub_list(int startIndex, int endIndex) {
     if (startIndex < 0 || startIndex >= length || startIndex > endIndex || endIndex >= length)
         throw std::out_of_range("Index out of range");
 
@@ -174,7 +175,7 @@ LinkedList<T> *LinkedList<T>::GetSubList(int startIndex, int endIndex) {
     }
 
     for (int i = startIndex; i <= endIndex; i++) {
-        newList->Append(current->data);
+        newList->append(current->data);
         current = current->next;
     }
 
@@ -184,7 +185,7 @@ LinkedList<T> *LinkedList<T>::GetSubList(int startIndex, int endIndex) {
 /*============ ОПЕРАЦИИ ============*/
 
 template<class T>
-void LinkedList<T>::Append(const T& element) {
+void LinkedList<T>::append(const T& element) {
 
     Node *newNode = new Node(element);
 
@@ -201,7 +202,7 @@ void LinkedList<T>::Append(const T& element) {
 }
 
 template<class T>
-void LinkedList<T>::Prepend(const T& element) {
+void LinkedList<T>::prepend(const T& element) {
 
     Node *newNode = new Node(element);
 
@@ -215,16 +216,16 @@ void LinkedList<T>::Prepend(const T& element) {
 }
 
 template<class T>
-void LinkedList<T>::InsertAt(const T& element, int index) {
+void LinkedList<T>::insert_at(const T& element, int index) {
     if (index < 0 || index > length)
         throw std::out_of_range("Index out of range");
 
     if (index == 0) {
-        Prepend(element);
+        prepend(element);
         return;
     }
     if (index == length) {
-        Append(element);
+        append(element);
         return;
     }
 
@@ -243,7 +244,7 @@ void LinkedList<T>::InsertAt(const T& element, int index) {
 }
 
 template<class T>
-void LinkedList<T>::RemoveAt(int index) {
+void LinkedList<T>::remove_at(int index) {
 
     if (index < 0 || index >= length)
         throw std::out_of_range("Index out of range");
@@ -279,13 +280,13 @@ void LinkedList<T>::RemoveAt(int index) {
 }
 
 template<class T>
-LinkedList<T>* LinkedList<T>::Concat(LinkedList<T> *list) {
+LinkedList<T>* LinkedList<T>::concat(LinkedList<T> *list) {
 
     LinkedList<T> *concatList = new LinkedList<T>(*this);
 
     Node *current = list->head;
     while (current != nullptr) {
-        concatList->Append(current->data);
+        concatList->append(current->data);
         current = current -> next;
     }
 

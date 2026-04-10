@@ -12,8 +12,8 @@ public:
     ImmutableArraySequence();
     ImmutableArraySequence(const ImmutableArraySequence<T> &other);
 
-    Sequence<T>* Instance() override;
-    Sequence<T>* CreateEmptySequence() const override;
+    Sequence<T>* instance() override;
+    Sequence<T>* create_empty_sequence() const override;
 };
 
 template<class T>
@@ -29,12 +29,12 @@ ImmutableArraySequence<T>::ImmutableArraySequence(const ImmutableArraySequence<T
     : ArraySequence<T>(other) {}
 
 template<class T>
-Sequence<T>* ImmutableArraySequence<T>::Instance() {
+Sequence<T>* ImmutableArraySequence<T>::instance() {
     return new ImmutableArraySequence<T>(*this);
 }
 
 template<class T>
-Sequence<T>* ImmutableArraySequence<T>::CreateEmptySequence() const {
+Sequence<T>* ImmutableArraySequence<T>::create_empty_sequence() const {
     return new ImmutableArraySequence<T>();
 }
 #endif //LABA2_IMMUTABLEARRAYSEQUENCE_H

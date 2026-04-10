@@ -12,8 +12,8 @@ public:
     MutableArraySequence();
     MutableArraySequence(const MutableArraySequence &other);
 
-    Sequence<T>* Instance() override;
-    Sequence<T>* CreateEmptySequence() const override;
+    Sequence<T>* instance() override;
+    Sequence<T>* create_empty_sequence() const override;
 };
 
 template<class T>
@@ -29,12 +29,12 @@ MutableArraySequence<T>::MutableArraySequence(const MutableArraySequence<T> &oth
     : ArraySequence<T>(other) {}
 
 template<class T>
-Sequence<T>* MutableArraySequence<T>::Instance() {
+Sequence<T>* MutableArraySequence<T>::instance() {
     return this;
 }
 
 template<class T>
-Sequence<T>* MutableArraySequence<T>::CreateEmptySequence() const {
+Sequence<T>* MutableArraySequence<T>::create_empty_sequence() const {
     return new MutableArraySequence<T>();
 }
 #endif //LABA2_MUTABLEARRAYSEQUENCE_H
