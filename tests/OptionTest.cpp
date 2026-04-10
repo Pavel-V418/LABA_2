@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "mutableArraySequence.h"
-#include "mutableListSequence.h"
+#include "../mutableArraySequence.h"
+#include "../mutableListSequence.h"
 
 
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.1)
+cmake_minimum_required(VERSION 3.26)
 project(LABA2)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -49,4 +49,3 @@ target_include_directories( tests PRIVATE ${CMAKE_SOURCE_DIR})
 
 include(GoogleTest)
 gtest_discover_tests( tests )
-
