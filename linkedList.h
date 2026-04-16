@@ -167,7 +167,7 @@ LinkedList<T> *LinkedList<T>::get_sub_list(int startIndex, int endIndex) {
     if (startIndex < 0 || startIndex >= length || startIndex > endIndex || endIndex >= length)
         throw std::out_of_range("Index out of range");
 
-    LinkedList<T> *newList = new LinkedList<T>(); // нужно ли выделять память или передать как параметр?
+    LinkedList<T> *newList = new LinkedList<T>();
 
     Node *current = head;
     for (int i = 0; i < startIndex; i++) {
