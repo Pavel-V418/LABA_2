@@ -29,6 +29,8 @@ public:
     void resize(int newSize);
 
     // итератор
+    class ArrayEnumerator : public IEnumerator<T> {
+
     public:
         ArrayEnumerator(const DynamicArray<T> *arr)
             : current(arr->data), // указатель на первый элемент
@@ -44,6 +46,11 @@ public:
 
             return *current++; // разыменовали и сдвинулись
         }
+
+    private:
+        const T* current;
+        const T* end;
+    };
 
 };
 
