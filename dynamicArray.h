@@ -144,6 +144,7 @@ void DynamicArray<T>::resize(int newSize) {
 
     delete[] data;
     data = newData;
+    capacity = newCapacity;
     size = newSize;
 }
 
