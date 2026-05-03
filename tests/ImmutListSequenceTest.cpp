@@ -14,8 +14,6 @@ TEST(ImmutableListSequence, Append)
     delete s1;
 }
 
-
-
 TEST(ImmutableListSequence, Prepend)
 {
     ImmutableListSequence<int> seq;
@@ -31,8 +29,6 @@ TEST(ImmutableListSequence, Prepend)
     delete s1;
     delete s2;
 }
-
-
 
 TEST(ImmutableListSequence, InsertAt)
 {
@@ -52,8 +48,6 @@ TEST(ImmutableListSequence, InsertAt)
     delete s2;
     delete s3;
 }
-
-
 
 TEST(ImmutableListSequence, RemoveAt)
 {
@@ -76,8 +70,6 @@ TEST(ImmutableListSequence, RemoveAt)
     delete s3;
     delete result;
 }
-
-
 
 TEST(ImmutableListSequence, Concat)
 {
@@ -105,8 +97,6 @@ TEST(ImmutableListSequence, Concat)
     delete result;
 }
 
-
-
 TEST(ImmutableListSequence, Subsequence)
 {
     ImmutableListSequence<int> seq;
@@ -129,8 +119,6 @@ TEST(ImmutableListSequence, Subsequence)
     delete sub;
 }
 
-
-
 TEST(ImmutableListSequence, Map)
 {
     ImmutableListSequence<int> seq;
@@ -152,8 +140,6 @@ TEST(ImmutableListSequence, Map)
     delete s3;
     delete result;
 }
-
-
 
 TEST(ImmutableListSequence, Where)
 {
@@ -178,8 +164,6 @@ TEST(ImmutableListSequence, Where)
     delete s4;
     delete result;
 }
-
-
 
 TEST(ImmutableListSequence, Reduce)
 {

@@ -14,8 +14,6 @@ TEST(ImmutableArraySequence, Append)
     delete newSeq;
 }
 
-
-
 TEST(ImmutableArraySequence, Prepend)
 {
     ImmutableArraySequence<int> seq;
@@ -30,8 +28,6 @@ TEST(ImmutableArraySequence, Prepend)
     delete s1;
     delete s2;
 }
-
-
 
 TEST(ImmutableArraySequence, InsertAt)
 {
@@ -51,8 +47,6 @@ TEST(ImmutableArraySequence, InsertAt)
     delete s2;
     delete s3;
 }
-
-
 
 TEST(ImmutableArraySequence, RemoveAt)
 {
@@ -75,8 +69,6 @@ TEST(ImmutableArraySequence, RemoveAt)
     delete s3;
     delete result;
 }
-
-
 
 TEST(ImmutableArraySequence, Concat)
 {
@@ -104,8 +96,6 @@ TEST(ImmutableArraySequence, Concat)
     delete result;
 }
 
-
-
 TEST(ImmutableArraySequence, Subsequence)
 {
     ImmutableArraySequence<int> seq;
@@ -128,8 +118,6 @@ TEST(ImmutableArraySequence, Subsequence)
     delete sub;
 }
 
-
-
 TEST(ImmutableArraySequence, Map)
 {
     ImmutableArraySequence<int> seq;
@@ -151,8 +139,6 @@ TEST(ImmutableArraySequence, Map)
     delete s3;
     delete result;
 }
-
-
 
 TEST(ImmutableArraySequence, Where)
 {
@@ -177,8 +163,6 @@ TEST(ImmutableArraySequence, Where)
     delete s4;
     delete result;
 }
-
-
 
 TEST(ImmutableArraySequence, Reduce)
 {

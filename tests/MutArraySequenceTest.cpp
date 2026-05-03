@@ -15,8 +15,6 @@ TEST(ArraySequence, Append)
     EXPECT_EQ(seq.get(2), 3);
 }
 
-
-
 TEST(ArraySequence, Prepend)
 {
     MutableArraySequence<int> seq;
@@ -30,8 +28,6 @@ TEST(ArraySequence, Prepend)
     EXPECT_EQ(seq.get(1), 2);
     EXPECT_EQ(seq.get(2), 3);
 }
-
-
 
 TEST(ArraySequence, InsertAt)
 {
@@ -48,8 +44,6 @@ TEST(ArraySequence, InsertAt)
     EXPECT_EQ(seq.get(2), 3);
 }
 
-
-
 TEST(ArraySequence, RemoveAt)
 {
     MutableArraySequence<int> seq;
@@ -65,8 +59,6 @@ TEST(ArraySequence, RemoveAt)
     EXPECT_EQ(seq.get(1), 3);
 }
 
-
-
 TEST(ArraySequence, GetFirst)
 {
     MutableArraySequence<int> seq;
@@ -77,8 +69,6 @@ TEST(ArraySequence, GetFirst)
     EXPECT_EQ(seq.get_first(), 10);
 }
 
-
-
 TEST(ArraySequence, GetLast)
 {
     MutableArraySequence<int> seq;
@@ -88,8 +78,6 @@ TEST(ArraySequence, GetLast)
 
     EXPECT_EQ(seq.get_last(), 20);
 }
-
-
 
 TEST(ArraySequence, Subsequence)
 {
@@ -108,8 +96,6 @@ TEST(ArraySequence, Subsequence)
 
     delete sub;
 }
-
-
 
 TEST(ArraySequence, Concat)
 {
@@ -132,8 +118,6 @@ TEST(ArraySequence, Concat)
     delete result;
 }
 
-
-
 TEST(ArraySequence, Map)
 {
     MutableArraySequence<int> seq;
@@ -152,8 +136,6 @@ TEST(ArraySequence, Map)
 
     delete result;
 }
-
-
 
 TEST(ArraySequence, Where)
 {
@@ -174,8 +156,6 @@ TEST(ArraySequence, Where)
 
     delete result;
 }
-
-
 
 TEST(ArraySequence, Reduce)
 {

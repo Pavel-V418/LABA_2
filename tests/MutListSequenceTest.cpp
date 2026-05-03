@@ -15,8 +15,6 @@ TEST(MutableListSequence, Append)
     EXPECT_EQ(seq.get(2), 3);
 }
 
-
-
 TEST(MutableListSequence, Prepend)
 {
     MutableListSequence<int> seq;
@@ -30,8 +28,6 @@ TEST(MutableListSequence, Prepend)
     EXPECT_EQ(seq.get(1), 2);
     EXPECT_EQ(seq.get(2), 3);
 }
-
-
 
 TEST(MutableListSequence, InsertAt)
 {
@@ -48,8 +44,6 @@ TEST(MutableListSequence, InsertAt)
     EXPECT_EQ(seq.get(2), 3);
 }
 
-
-
 TEST(MutableListSequence, RemoveAt)
 {
     MutableListSequence<int> seq;
@@ -65,8 +59,6 @@ TEST(MutableListSequence, RemoveAt)
     EXPECT_EQ(seq.get(1), 3);
 }
 
-
-
 TEST(MutableListSequence, GetFirst)
 {
     MutableListSequence<int> seq;
@@ -77,8 +69,6 @@ TEST(MutableListSequence, GetFirst)
     EXPECT_EQ(seq.get_first(), 10);
 }
 
-
-
 TEST(MutableListSequence, GetLast)
 {
     MutableListSequence<int> seq;
@@ -88,8 +78,6 @@ TEST(MutableListSequence, GetLast)
 
     EXPECT_EQ(seq.get_last(), 20);
 }
-
-
 
 TEST(MutableListSequence, Subsequence)
 {
@@ -108,8 +96,6 @@ TEST(MutableListSequence, Subsequence)
 
     delete sub;
 }
-
-
 
 TEST(MutableListSequence, Concat)
 {
@@ -132,8 +118,6 @@ TEST(MutableListSequence, Concat)
     delete result;
 }
 
-
-
 TEST(MutableListSequence, Map)
 {
     MutableListSequence<int> seq;
@@ -152,8 +136,6 @@ TEST(MutableListSequence, Map)
 
     delete result;
 }
-
-
 
 TEST(MutableListSequence, Where)
 {
@@ -174,8 +156,6 @@ TEST(MutableListSequence, Where)
 
     delete result;
 }
-
-
 
 TEST(MutableListSequence, Reduce)
 {

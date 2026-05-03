@@ -2,8 +2,6 @@
 #include "../mutableArraySequence.h"
 #include "../mutableListSequence.h"
 
-
-
 TEST(sequence_try, try_get_first_not_empty)
 {
     MutableArraySequence<int> seq;
@@ -17,8 +15,6 @@ TEST(sequence_try, try_get_first_not_empty)
     EXPECT_EQ(result.get_value(), 10);
 }
 
-
-
 TEST(sequence_try, try_get_first_empty)
 {
     MutableArraySequence<int> seq;
@@ -27,8 +23,6 @@ TEST(sequence_try, try_get_first_empty)
 
     EXPECT_FALSE(result.has_more_elements());
 }
-
-
 
 TEST(sequence_try, try_get_last)
 {
@@ -44,8 +38,6 @@ TEST(sequence_try, try_get_last)
     EXPECT_EQ(result.get_value(), 3);
 }
 
-
-
 TEST(sequence_try, try_get_valid_index)
 {
     MutableArraySequence<int> seq;
@@ -60,8 +52,6 @@ TEST(sequence_try, try_get_valid_index)
     EXPECT_EQ(result.get_value(), 6);
 }
 
-
-
 TEST(sequence_try, try_get_invalid_index)
 {
     MutableArraySequence<int> seq;
@@ -74,8 +64,6 @@ TEST(sequence_try, try_get_invalid_index)
     EXPECT_FALSE(result.has_more_elements());
 }
 
-
-
 TEST(sequence_try, try_get_negative_index)
 {
     MutableArraySequence<int> seq;
@@ -86,8 +74,6 @@ TEST(sequence_try, try_get_negative_index)
 
     EXPECT_FALSE(result.has_more_elements());
 }
-
-
 
 TEST(sequence_try, list_sequence_try_get)
 {
