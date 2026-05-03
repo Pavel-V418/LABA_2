@@ -3,7 +3,6 @@
 
 #include "i_enumerable.h"
 #include <stdexcept>
-#include <ostream>
 #include "option.h"
 
 template <class T>
@@ -218,25 +217,6 @@ bool Sequence<T>::operator==(const Sequence<T> &other) const { // нужен л�
 template<class T>
 Sequence<T> *Sequence<T>::operator+(const Sequence<T> &other) const{
     return this->concat(other);
-}
-
-template<class T>
-std::ostream& operator<<(std::ostream &os, const Sequence<T> &seq) { // 1 параметр - ссылка куда мы пишем
-    auto it = seq.get_enumerator();
-
-    os << "[";
-
-    while (it->has_more_elements()) {
-        os << it->next();
-
-        if (it->has_more_elements())
-            os << ", ";
-    }
-
-    os << "]";
-
-    delete it;
-    return os;
 }
 
 // option's functions

@@ -17,6 +17,7 @@ add_executable(LABA2 main.cpp
         i_enumerator.h
         i_enumerable.h
         option.h
+        sequence_print.h
 )
 
 # Подключаем GoogleTest

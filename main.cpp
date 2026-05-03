@@ -4,6 +4,7 @@
 #include "immutableArraySequence.h"
 #include "mutableListSequence.h"
 #include "immutableListSequence.h"
+#include "sequence_print.h"
 
 int ReadInt()
 {
@@ -21,8 +22,6 @@ int ReadInt()
     }
 }
 
-
-
 int MultiplyBy2(const int& x)
 {
     return x * 2;
@@ -37,20 +36,6 @@ int Sum(const int& a, const int& b)
 {
     return a + b;
 }
-
-
-
-void PrintSequence(Sequence<int>* seq)
-{
-    std::cout << "[ ";
-
-    for (int i = 0; i < seq->get_length(); i++)
-        std::cout << seq->get(i) << " ";
-
-    std::cout << "]\n";
-}
-
-
 
 void SequenceMenu(Sequence<int>* seq)
 {
@@ -78,8 +63,6 @@ void SequenceMenu(Sequence<int>* seq)
         std::cout << "Choose operation: ";
         choice = ReadInt();
 
-
-
         if (choice == 1)
         {
             std::cout << "Enter value: ";
@@ -94,8 +77,6 @@ void SequenceMenu(Sequence<int>* seq)
             }
         }
 
-
-
         else if (choice == 2)
         {
             std::cout << "Enter value: ";
@@ -109,8 +90,6 @@ void SequenceMenu(Sequence<int>* seq)
                 seq = newSeq;
             }
         }
-
-
 
         else if (choice == 3)
         {
@@ -136,8 +115,6 @@ void SequenceMenu(Sequence<int>* seq)
             }
         }
 
-
-
         else if (choice == 4)
         {
             std::cout << "Enter index: ";
@@ -159,8 +136,6 @@ void SequenceMenu(Sequence<int>* seq)
             }
         }
 
-
-
         else if (choice == 5)
         {
             std::cout << "Enter index: ";
@@ -176,8 +151,6 @@ void SequenceMenu(Sequence<int>* seq)
             }
         }
 
-
-
         else if (choice == 6)
         {
             try
@@ -189,8 +162,6 @@ void SequenceMenu(Sequence<int>* seq)
                 std::cout << "Sequence is empty\n";
             }
         }
-
-
 
         else if (choice == 7)
         {
@@ -204,14 +175,10 @@ void SequenceMenu(Sequence<int>* seq)
             }
         }
 
-
-
         else if (choice == 8)
         {
             std::cout << "Length: " << seq->get_length() << "\n";
         }
-
-
 
         else if (choice == 9)
         {
@@ -234,8 +201,6 @@ void SequenceMenu(Sequence<int>* seq)
                 std::cout << "Invalid indices\n";
             }
         }
-
-
 
         else if (choice == 10)
         {
@@ -260,8 +225,6 @@ void SequenceMenu(Sequence<int>* seq)
             seq = result;
         }
 
-
-
         else if (choice == 11)
         {
             std::cout << "Applying map (*2)...\n";
@@ -271,8 +234,6 @@ void SequenceMenu(Sequence<int>* seq)
             delete seq;
             seq = result;
         }
-
-
 
         else if (choice == 12)
         {
@@ -284,16 +245,12 @@ void SequenceMenu(Sequence<int>* seq)
             seq = result;
         }
 
-
-
         else if (choice == 13)
         {
             int result = seq->reduce(Sum, 0);
 
             std::cout << "Reduce result: " << result << "\n";
         }
-
-
 
         else if (choice == 14)
         {
@@ -303,8 +260,6 @@ void SequenceMenu(Sequence<int>* seq)
 
     delete seq;
 }
-
-
 
 Sequence<int>* CreateArraySequence()
 {
@@ -321,8 +276,6 @@ Sequence<int>* CreateArraySequence()
         return new ImmutableArraySequence<int>();
 }
 
-
-
 Sequence<int>* CreateListSequence()
 {
     std::cout << "\nListSequence type:\n";
@@ -337,8 +290,6 @@ Sequence<int>* CreateListSequence()
     else
         return new ImmutableListSequence<int>();
 }
-
-
 
 int main()
 {
